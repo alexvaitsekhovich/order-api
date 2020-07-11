@@ -1,8 +1,6 @@
 package com.alexvait.orderapi.mapper;
 
-import com.alexvait.orderapi.dto.AddressDto;
 import com.alexvait.orderapi.dto.OrderDto;
-import com.alexvait.orderapi.entity.Address;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

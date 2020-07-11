@@ -1,6 +1,5 @@
 package com.alexvait.orderapi.service;
 
-import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.Order;
 import org.springframework.stereotype.Service;
 

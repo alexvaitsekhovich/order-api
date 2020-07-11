@@ -1,7 +1,6 @@
 package com.alexvait.orderapi.entity;
 
 import com.alexvait.orderapi.exception.IllegalOrderStatusException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +22,9 @@ class OrderStatusTest {
         // assert
         Stream.of(OrderStatus.values())
                 .forEach(orderStatus -> assertEquals(
-                                orderStatus.getId(),
-                                OrderStatus.getStatusByAction(orderStatus.getAction())
-                        ));
+                        orderStatus.getId(),
+                        OrderStatus.getStatusByAction(orderStatus.getAction())
+                ));
     }
 
     @Test
