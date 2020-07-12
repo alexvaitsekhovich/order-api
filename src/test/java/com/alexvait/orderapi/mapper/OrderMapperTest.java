@@ -1,6 +1,7 @@
 package com.alexvait.orderapi.mapper;
 
 import com.alexvait.orderapi.dto.OrderDto;
+import com.alexvait.orderapi.entity.Order;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -36,4 +37,23 @@ class OrderMapperTest {
         assertEquals(testOrder.getAddress().getStreet(), orderDto.getAddress().getStreet());
         assertEquals(testOrder.getAddress().getNr(), orderDto.getAddress().getNr());
     }
+
+    @Test
+    public void testOrderToOrderDtoWithNull() {
+
+        // arrange
+
+        // act
+        OrderDto orderDto = orderMapper.orderToOrderDto(new Order());
+
+        // assert
+        assertEquals(null, orderDto.getId());
+        assertEquals(null, orderDto.getNumber());
+        assertEquals(null, orderDto.getPaymentId());
+        assertEquals(null, orderDto.getAmount());
+        assertEquals(null, orderDto.getDiscountAmount());
+        assertEquals(null, orderDto.getAddress());
+        assertEquals(0, orderDto.getOrderParts().size());
+    }
+
 }

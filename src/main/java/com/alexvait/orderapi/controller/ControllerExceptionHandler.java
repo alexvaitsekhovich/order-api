@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,22 +40,6 @@ public class ControllerExceptionHandler {
                 exception.getMessage(), httpRequest.getRequestURI()));
 
         return constructResponseEntity(HttpStatus.BAD_REQUEST, exception.toString(), httpRequest.getRequestURI());
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException exception,
-                                                                                  HttpServletRequest httpRequest) {
-
-        log.error(String.format("ConstraintViolationException: %s at URL: %s",
-                exception.getMessage(), httpRequest.getRequestURI()));
-
-        List<String> errors = exception.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .collect(Collectors.toList());
-
-        return constructResponseEntity(HttpStatus.BAD_REQUEST, errors, httpRequest.getRequestURI());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -89,7 +71,7 @@ public class ControllerExceptionHandler {
     }
 
     private ResponseEntity<Map<String, Object>> constructResponseEntity(HttpStatus httpStatus, String error, String uri) {
-        return constructResponseEntity(httpStatus, Arrays.asList(error), uri);
+        return constructResponseEntity(httpStatus, Collections.singletonList(error), uri);
     }
 
     private ResponseEntity<Map<String, Object>> constructResponseEntity(HttpStatus httpStatus, List<String> errors, String uri) {

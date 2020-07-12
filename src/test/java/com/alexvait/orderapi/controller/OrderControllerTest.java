@@ -217,6 +217,4 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.error", containsString("com.alexvait.orderapi.exception.IllegalOrderStatusException")));
         verify(orderService, times(1)).changeStatus(id, action);
     }
-
-
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ApiError {
-    private Map<String, Object> errorBody;
+    private final Map<String, Object> errorBody;
 
     public ApiError(HttpStatus httpStatus) {
         errorBody = new LinkedHashMap<>();
