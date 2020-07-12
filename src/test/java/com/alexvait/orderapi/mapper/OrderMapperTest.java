@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("Test Order-DTO mapper")
 class OrderMapperTest {
@@ -47,12 +48,12 @@ class OrderMapperTest {
         OrderDto orderDto = orderMapper.orderToOrderDto(new Order());
 
         // assert
-        assertEquals(null, orderDto.getId());
-        assertEquals(null, orderDto.getNumber());
-        assertEquals(null, orderDto.getPaymentId());
-        assertEquals(null, orderDto.getAmount());
-        assertEquals(null, orderDto.getDiscountAmount());
-        assertEquals(null, orderDto.getAddress());
+        assertNull(orderDto.getId());
+        assertNull(orderDto.getNumber());
+        assertNull(orderDto.getPaymentId());
+        assertNull(orderDto.getAmount());
+        assertNull(orderDto.getDiscountAmount());
+        assertNull(orderDto.getAddress());
         assertEquals(0, orderDto.getOrderParts().size());
     }
 
