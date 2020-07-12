@@ -3,6 +3,7 @@ package com.alexvait.orderapi.controller;
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.entity.PaymentInformation;
+import com.alexvait.orderapi.exception.IllegalOrderStatusException;
 import com.alexvait.orderapi.exception.NotFoundException;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
@@ -198,5 +199,24 @@ class OrderControllerTest {
 
         verify(orderService, times(1)).changeStatus(id, action);
     }
+
+    @Test
+    @DisplayName("Test order update order illegal status")
+    public void updateStatusIllegalStatus() throws Exception {
+
+        // arrange
+        long id = testOrder.getId();
+        String action = "someAction";
+        when(orderService.changeStatus(id, action)).thenThrow(IllegalOrderStatusException.class);
+
+        // act, assert
+        mockMvc.perform(patch(ORDERS_URI + id + "/actions/" + action))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error", containsString("com.alexvait.orderapi.exception.IllegalOrderStatusException")));
+        verify(orderService, times(1)).changeStatus(id, action);
+    }
+
 
 }

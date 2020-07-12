@@ -18,11 +18,6 @@ public interface OrderMapper {
 
     Address addressDtoToAddress(AddressDto addressDto);
 
-/*
-    PaymentInformationDto paymentInformationToPaymentInformationDto(PaymentInformation paymentInformation);
-    PaymentInformation paymentInformationDtoToPaymentInformation(PaymentInformationDto paymentInformationDto);
-*/
-
     @Mapping(target = "paymentId", source = "paymentInformation.paymentId")
     @Mapping(target = "amount", source = "paymentInformation.amount")
     @Mapping(target = "discountAmount", source = "paymentInformation.discountAmount")
