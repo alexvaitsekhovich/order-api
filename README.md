@@ -1,6 +1,7 @@
 Order API
 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bf8c5dbab7df4c4f89db08233fb00b45)](https://app.codacy.com/manual/alexvaitsekhovich/order-api?utm_source=github.com&utm_medium=referral&utm_content=alexvaitsekhovich/order-api&utm_campaign=Badge_Grade_Settings)
 [![Build Status](https://travis-ci.org/alexvaitsekhovich/order-api.svg?branch=master)](https://travis-ci.org/alexvaitsekhovich/order-api) [![pipeline statu](https://gitlab.com/alex.vaitsekhovich/order-api/badges/master/pipeline.svg)](https://gitlab.com/alex.vaitsekhovich/order-api//pipelines) [![CircleCI](https://circleci.com/gh/alexvaitsekhovich/order-api.svg?style=svg)](https://circleci.com/gh/alexvaitsekhovich/order-api)
 
 
