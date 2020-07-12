@@ -1,8 +1,30 @@
+variables:
+  ARTIFACT_NAME: order-api-1.0.$CI_PIPELINE_IID.jar
+
 stages:
   - test
+  - build
 
 unit tests:
   stage: test
   image: openjdk:12-alpine
   script:
     - ./mvnw test
+
+integration tests:
+  stage: test
+  image: openjdk:12-alpine
+  script:
+    - ./mvnw verify -DskipUTs=true
+
+build a jar:
+  stage: build
+  image: openjdk:12-alpine
+  script:
+    - ./mvnw package -Dmaven.test.skip=true
+    - mkdir ./build
+    - mv target/order-api-1.0.0.jar ./build/$ARTIFACT_NAME
+  artifacts:
+    paths:
+      - ./build
+
