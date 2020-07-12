@@ -25,7 +25,7 @@ class ApiErrorTest {
 
     @Test
     void setOneError() {
-        // assign
+        // arrange
         apiError.setErrors(Collections.singletonList("Error"));
 
         // act

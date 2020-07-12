@@ -37,8 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Test Order controller")
 class OrderControllerTest {
 
-    public static final String ORDERS_URI = "/orders/";
-
     @Mock
     private OrderService orderService;
 
@@ -66,7 +64,7 @@ class OrderControllerTest {
         when(orderService.getOrders(0, 2, "asc", "id")).thenReturn(orders);
 
         // act
-        MvcResult result = mockMvc.perform(get(ORDERS_URI))
+        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -92,7 +90,7 @@ class OrderControllerTest {
         when(orderService.findById(anyLong())).thenReturn(testOrder);
 
         // act, assert
-        MvcResult result = mockMvc.perform(get(ORDERS_URI + testOrder.getId()))
+        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL + "/" + testOrder.getId()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -125,7 +123,7 @@ class OrderControllerTest {
         when(orderService.findById(anyLong())).thenThrow(NotFoundException.class);
 
         // act, assert
-        mockMvc.perform(get(ORDERS_URI + 0))
+        mockMvc.perform(get(OrderController.BASE_URL + "/1"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -137,7 +135,7 @@ class OrderControllerTest {
         // arrange
 
         // act, assert
-        mockMvc.perform(get(ORDERS_URI + "aaa"))
+        mockMvc.perform(get(OrderController.BASE_URL + "/aaa"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -153,7 +151,7 @@ class OrderControllerTest {
         OrderDto orderDto = orderDtoMapper.orderToOrderDto(testOrder);
 
         // act, assert
-        MvcResult result = mockMvc.perform(post(ORDERS_URI)
+        MvcResult result = mockMvc.perform(post(OrderController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(orderDto))
                 .accept(MediaType.APPLICATION_JSON))
@@ -192,7 +190,7 @@ class OrderControllerTest {
         when(orderService.changeStatus(id, action)).thenReturn(testOrder);
 
         // act, assert
-        mockMvc.perform(patch(ORDERS_URI + id + "/actions/" + action))
+        mockMvc.perform(patch(OrderController.BASE_URL + "/" + id + "/actions/" + action))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -210,7 +208,7 @@ class OrderControllerTest {
         when(orderService.changeStatus(id, action)).thenThrow(IllegalOrderStatusException.class);
 
         // act, assert
-        mockMvc.perform(patch(ORDERS_URI + id + "/actions/" + action))
+        mockMvc.perform(patch(OrderController.BASE_URL + "/" + id + "/actions/" + action))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

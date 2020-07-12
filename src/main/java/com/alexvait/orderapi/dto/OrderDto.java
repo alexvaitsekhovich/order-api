@@ -16,7 +16,6 @@ public class OrderDto {
     @NotBlank
     private String number;
 
-    @NotNull(message = "Status id is mandatory")
     private Integer statusId;
 
     @NotNull(message = "Payment id is mandatory")

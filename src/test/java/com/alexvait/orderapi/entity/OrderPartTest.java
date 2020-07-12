@@ -16,7 +16,7 @@ class OrderPartTest {
     @DisplayName("Verify that the order is not included into toString()")
     void testToString() {
 
-        // assert
+        // arrange
         Random random = new Random(31);
 
         Long ITEM_ID = (long) random.nextInt(1000);

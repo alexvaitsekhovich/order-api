@@ -24,11 +24,12 @@ public class ControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public void handleNotFound(NotFoundException exception,
-                               HttpServletRequest httpRequest) {
+    public ResponseEntity<Map<String, Object>> handleNotFound(NotFoundException exception,
+                                                              HttpServletRequest httpRequest) {
 
         log.error(String.format("NotFoundException: %s at URL: %s",
                 exception.getMessage(), httpRequest.getRequestURI()));
+        return constructResponseEntity(HttpStatus.NOT_FOUND, exception.toString(), httpRequest.getRequestURI());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

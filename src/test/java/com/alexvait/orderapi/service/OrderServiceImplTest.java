@@ -33,7 +33,7 @@ class OrderServiceImplTest {
     @Mock
     private OrderRepository orderRepository;
 
-    private OrderServiceImpl orderService;
+    private OrderService orderService;
 
     @BeforeEach
     void setUp() {
@@ -43,6 +43,7 @@ class OrderServiceImplTest {
     @Test
     @DisplayName("Test get multiple orders")
     void getOrders() {
+
         // arrange
         final int PAGE = 1;
         final int SIZE = 2;

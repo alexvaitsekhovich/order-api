@@ -23,21 +23,21 @@ public class OrderPart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Order part item id is mandatory")
+    @NotNull(message = "Entity says: Order part item id is mandatory")
     @Column(name = "item_id")
     private Long itemId;
 
-    @NotBlank(message = "Order part item name is mandatory")
+    @NotBlank(message = "Entity says: Order part item name is mandatory")
     @Size(min=2, max = 255)
     @Column(name = "item_name")
     private String itemName;
 
-    @NotNull(message = "Order part item count is mandatory")
+    @NotNull(message = "Entity says: Order part item count is mandatory")
     @Min(1)
     @Column(name = "count")
     private Integer count;
 
-    @NotNull(message = "Order part item price is mandatory")
+    @NotNull(message = "Entity says: Order part item price is mandatory")
     @Column(name = "price")
     private Integer price;
 

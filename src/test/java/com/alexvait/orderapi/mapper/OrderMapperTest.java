@@ -25,13 +25,17 @@ class OrderMapperTest {
         // assert
         assertEquals(testOrder.getId(), orderDto.getId());
         assertEquals(testOrder.getNumber(), orderDto.getNumber());
+
         assertEquals(testOrder.getPaymentInformation().getPaymentId(), orderDto.getPaymentId());
         assertEquals(testOrder.getPaymentInformation().getAmount(), orderDto.getAmount());
         assertEquals(testOrder.getPaymentInformation().getDiscountAmount(), orderDto.getDiscountAmount());
+
         assertEquals(testOrder.getAddress().getCity(), orderDto.getAddress().getCity());
         assertEquals(testOrder.getAddress().getZip(), orderDto.getAddress().getZip());
         assertEquals(testOrder.getAddress().getStreet(), orderDto.getAddress().getStreet());
         assertEquals(testOrder.getAddress().getNr(), orderDto.getAddress().getNr());
+
+        assertEquals(2, orderDto.getOrderParts().size());
     }
 
     @Test

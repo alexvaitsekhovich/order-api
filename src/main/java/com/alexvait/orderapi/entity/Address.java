@@ -21,17 +21,17 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "City is mandatory")
+    @NotBlank(message = "Entity says: City is mandatory")
     @Size(max = 255)
     @Column(name = "city")
     private String city;
 
-    @NotBlank(message = "Zip code is mandatory, between 3 and 10 digits")
+    @NotBlank(message = "Entity says: Zip code is mandatory, between 3 and 10 digits")
     @Size(min=3, max = 10, message = "Zip code size must be between 3 and 10")
     @Column(name = "zip")
     private String zip;
 
-    @NotBlank(message = "Street is mandatory")
+    @NotBlank(message = "Entity says: Street is mandatory")
     @Column(name = "street")
     private String street;
 

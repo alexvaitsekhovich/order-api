@@ -23,26 +23,26 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Order number is mandatory")
+    @NotBlank(message = "Entity says: Order number is mandatory")
     @Column(name = "number")
     private String number;
 
-    @NotNull(message = "Order status is mandatory")
+    @NotNull(message = "Entity says: Order status is mandatory")
     @Column(name = "status_id")
     private int statusId = OrderStatus.CREATED.getId();
 
-    @NotNull(message = "Creation date is mandatory")
+    @NotNull(message = "Entity says: Creation date is mandatory")
     @Column(name = "created_on", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdOn;
 
-    @NotNull(message = "Payment information is mandatory")
+    @NotNull(message = "Entity says: Payment information is mandatory")
     private PaymentInformation paymentInformation;
 
-    @NotNull(message = "Array of order parts is mandatory")
+    @NotNull(message = "Entity says: Array of order parts is mandatory")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderPart> orderParts = new ArrayList<>();
 
-    @NotNull(message = "Address is mandatory")
+    @NotNull(message = "Entity says: Address is mandatory")
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.LAZY)
     private Address address;
 
@@ -54,6 +54,10 @@ public class Order {
     public void addPart(OrderPart orderPart) {
         orderPart.setOrder(this);
         orderParts.add(orderPart);
+    }
+
+    public void setOrderParts(List<OrderPart> orderParts) {
+        orderParts.forEach(this::addPart);
     }
 
     public void setAddress(Address address) {

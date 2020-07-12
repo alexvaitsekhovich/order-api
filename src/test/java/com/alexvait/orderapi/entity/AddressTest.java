@@ -4,7 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Test Address entity")
 class AddressTest {
@@ -13,7 +13,7 @@ class AddressTest {
     @DisplayName("Verify that the order is not included into toString()")
     void testToString() {
 
-        // assert
+        // arrange
         String orderNumber = RandomStringUtils.randomAlphabetic(10);
         String city = RandomStringUtils.randomAlphabetic(100);
         String zip = RandomStringUtils.randomAlphabetic(10);
