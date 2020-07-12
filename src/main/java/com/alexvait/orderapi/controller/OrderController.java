@@ -6,6 +6,7 @@ import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,35 +27,34 @@ public class OrderController {
     }
 
     @GetMapping(value = {"/", ""})
-    public List<OrderDto> getAllOrders(@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "2") int size,
-                                       @RequestParam(defaultValue = "asc") String sortDirection,
-                                       @RequestParam(defaultValue = "id") String sortBy
+    public ResponseEntity<List<OrderDto>> getAllOrders(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "2") int size,
+                                                       @RequestParam(defaultValue = "asc") String sortDirection,
+                                                       @RequestParam(defaultValue = "id") String sortBy
     ) {
         List<Order> orders = orderService.getOrders(page, size, sortDirection, sortBy);
-        return orders.stream()
+        return ResponseEntity.ok(orders.stream()
                 .map(orderMapper::orderToOrderDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto saveOrder(@Valid @RequestBody OrderDto receivedOrderDto) {
+    public ResponseEntity<OrderDto> saveOrder(@Valid @RequestBody OrderDto receivedOrderDto) {
         log.info("Creating new order from dto : " + receivedOrderDto);
         Order order = orderService.save(orderMapper.orderDtoToOrder(receivedOrderDto));
-        return orderMapper.orderToOrderDto(order);
+        return new ResponseEntity<>(orderMapper.orderToOrderDto(order), HttpStatus.CREATED);
     }
 
     @GetMapping("/{orderId}")
-    public OrderDto getOrderById(@PathVariable long orderId) {
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable long orderId) {
         log.info("Getting order by id #" + orderId);
         Order order = orderService.findById(orderId);
-        return orderMapper.orderToOrderDto(order);
+        return ResponseEntity.ok(orderMapper.orderToOrderDto(order));
     }
 
     @PatchMapping("/{orderId}/actions/{action}")
-    public OrderDto updateStatus(@PathVariable long orderId, @PathVariable String action) {
+    public ResponseEntity<OrderDto> updateStatus(@PathVariable long orderId, @PathVariable String action) {
         Order order = orderService.changeStatus(orderId, action);
-        return orderMapper.orderToOrderDto(order);
+        return ResponseEntity.ok(orderMapper.orderToOrderDto(order));
     }
 }
