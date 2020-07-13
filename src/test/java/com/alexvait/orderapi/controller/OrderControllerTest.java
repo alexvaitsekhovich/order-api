@@ -64,7 +64,9 @@ class OrderControllerTest {
         when(orderService.getOrders(0, 2, "asc", "id")).thenReturn(orders);
 
         // act
-        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL))
+        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -90,7 +92,9 @@ class OrderControllerTest {
         when(orderService.findById(anyLong())).thenReturn(testOrder);
 
         // act, assert
-        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL + "/" + testOrder.getId()))
+        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL + "/" + testOrder.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -135,7 +139,9 @@ class OrderControllerTest {
         // arrange
 
         // act, assert
-        mockMvc.perform(get(OrderController.BASE_URL + "/aaa"))
+        mockMvc.perform(get(OrderController.BASE_URL + "/aaa")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -152,8 +158,8 @@ class OrderControllerTest {
 
         // act, assert
         MvcResult result = mockMvc.perform(post(OrderController.BASE_URL)
-                .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(orderDto))
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -208,7 +214,9 @@ class OrderControllerTest {
         when(orderService.changeStatus(id, action)).thenThrow(IllegalOrderStatusException.class);
 
         // act, assert
-        mockMvc.perform(patch(OrderController.BASE_URL + "/" + id + "/actions/" + action))
+        mockMvc.perform(patch(OrderController.BASE_URL + "/" + id + "/actions/" + action)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
