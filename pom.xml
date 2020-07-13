@@ -29,8 +29,11 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
         <org.apache.commons.version>3.10</org.apache.commons.version>
+        <springfox.swagger.version>2.8.0</springfox.swagger.version>
+
         <skipTests>false</skipTests>
         <skipITs>${skipTests}</skipITs>
         <skipUTs>${skipTests}</skipUTs>
@@ -84,6 +87,17 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox.swagger.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
