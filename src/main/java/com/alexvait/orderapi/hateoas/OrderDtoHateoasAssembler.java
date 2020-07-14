@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.alexvait.orderapi.controller.OrderController.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -22,6 +23,7 @@ public class OrderDtoHateoasAssembler implements RepresentationModelAssembler<Or
 
     @Override
     public EntityModel<OrderDto> toModel(OrderDto orderDto) {
+
         EntityModel<OrderDto> orderDtoEntityModel = EntityModel.of(
                 orderDto,
                 linkTo(methodOn(OrderController.class).getOrderById(orderDto.getId())).withSelfRel(),
@@ -45,7 +47,9 @@ public class OrderDtoHateoasAssembler implements RepresentationModelAssembler<Or
                 StreamSupport.stream(orderDtos.spliterator(), false)
                         .map(this::toModel)
                         .collect(Collectors.toList()),
-                linkTo(methodOn(OrderController.class).getAllOrders()).withSelfRel()
+                linkTo(methodOn(OrderController.class)
+                        .getAllOrders(DEFAULT_PAGE_INT, DEFAULT_SIZE_INT, DEFAULT_DIRECTION, DEFAULT_SORT))
+                        .withSelfRel()
         );
     }
 

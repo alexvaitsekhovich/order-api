@@ -127,8 +127,14 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.orderParts", hasSize(2)))
                 .andReturn();
 
-        OrderDto returnedOrderDto = jsonMapper.readValue(result.getResponse().getContentAsString(), OrderDto.class);
-        assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(returnedOrderDto));
+        EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(
+                result.getResponse().getContentAsString(),
+                new TypeReference<EntityModel<OrderDto>>() {
+                }
+        );
+        OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
+
+        assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(createdOrderDto));
         verify(orderService, times(1)).findById(testOrder.getId());
     }
 
@@ -193,7 +199,10 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.orderParts", hasSize(2)))
                 .andReturn();
 
-        OrderDto createdOrderDto = jsonMapper.readValue(result.getResponse().getContentAsString(), OrderDto.class);
+
+        EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<EntityModel<OrderDto>>() {
+        });
+        OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
 
         assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(createdOrderDto));
         verify(orderService, times(1)).save(testOrder);
