@@ -2,7 +2,9 @@ package com.alexvait.orderapi.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -10,7 +12,8 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
-public class OrderDto {
+@EqualsAndHashCode(callSuper = false)
+public class OrderDto extends RepresentationModel<OrderDto> {
     private Long id;
 
     private String number;
