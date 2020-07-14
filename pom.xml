@@ -169,7 +169,7 @@
                         <exclude>**/BootstrapData*</exclude>
                         <exclude>**/*Dto*</exclude>
                         <exclude>**/*Config*</exclude>
-                        <exclude>OrderApiApplication*</exclude>
+                        <exclude>**/OrderApiApplication*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

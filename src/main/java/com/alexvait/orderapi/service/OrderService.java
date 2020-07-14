@@ -1,6 +1,7 @@
 package com.alexvait.orderapi.service;
 
 import com.alexvait.orderapi.entity.Order;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 @Service
 public interface OrderService {
 
-    List<Order> getOrders(int page, int size, String sortDir, String sort);
+    List<Order> getOrders(PageRequest pageRequest);
 
     Order findById(Long id);
 

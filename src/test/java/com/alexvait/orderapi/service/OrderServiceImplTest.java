@@ -1,5 +1,6 @@
 package com.alexvait.orderapi.service;
 
+import com.alexvait.orderapi.config.ControllerPagination;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.entity.OrderStatus;
 import com.alexvait.orderapi.entity.PaymentInformation;
@@ -45,22 +46,19 @@ class OrderServiceImplTest {
     void getOrders() {
 
         // arrange
-        final int PAGE = 1;
-        final int SIZE = 2;
-
         Page<Order> orders = new PageImpl<>(Collections.singletonList(testOrder));
         when(orderRepository.findAll(any(PageRequest.class))).thenReturn(orders);
 
         // act
-        orderService.getOrders(PAGE, SIZE, "asc", "foo");
+        orderService.getOrders(ControllerPagination.DEFAULT_PAGE_REQUEST);
 
         // assert
         ArgumentCaptor<PageRequest> pageRequestCaptor = ArgumentCaptor.forClass(PageRequest.class);
         verify(orderRepository, times(1)).findAll(pageRequestCaptor.capture());
 
         PageRequest pageRequest = pageRequestCaptor.getValue();
-        assertEquals(PAGE, pageRequest.getPageNumber());
-        assertEquals(SIZE, pageRequest.getPageSize());
+        assertEquals(ControllerPagination.DEFAULT_PAGE_INT, pageRequest.getPageNumber());
+        assertEquals(ControllerPagination.DEFAULT_SIZE_INT, pageRequest.getPageSize());
     }
 
     @Test

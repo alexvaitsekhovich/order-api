@@ -17,10 +17,13 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -64,6 +67,17 @@ class OrderControllerTestIT {
         assertEquals(1, order.getId());
         assertEquals("AX", order.getNumber());
         assertEquals(2, order.getOrderParts().size());
+    }
 
+    @Test
+    @DisplayName("Test saving an order with invalid request body")
+    public void testSaveValidationException() throws Exception {
+
+        // arrange
+        OrderDto orderDto = orderMapper.orderToOrderDto(testOrder);
+        orderDto.setStatusId(null);
+
+        // act, assert
+        assertThrows(ConstraintViolationException.class, () -> orderController.saveOrder(orderDto));
     }
 }
