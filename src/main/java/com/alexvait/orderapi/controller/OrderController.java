@@ -1,5 +1,6 @@
 package com.alexvait.orderapi.controller;
 
+import com.alexvait.orderapi.config.ControllerPagination;
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.hateoas.OrderDtoHateoasAssembler;
@@ -8,6 +9,8 @@ import com.alexvait.orderapi.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -29,14 +32,6 @@ public class OrderController {
     private final OrderMapper orderMapper;
     private final OrderDtoHateoasAssembler hateoasAssembler;
 
-    public static final String DEFAULT_PAGE = "0";
-    public static final String DEFAULT_SIZE = "10";
-    public static final String DEFAULT_DIRECTION = "asc";
-    public static final String DEFAULT_SORT = "id";
-
-    public static final int DEFAULT_PAGE_INT = Integer.parseInt(DEFAULT_PAGE);
-    public static final int DEFAULT_SIZE_INT = Integer.parseInt(DEFAULT_SIZE);
-
     public OrderController(OrderService orderService,
                            OrderMapper orderMapper,
                            OrderDtoHateoasAssembler hateoasAssembler) {
@@ -46,18 +41,24 @@ public class OrderController {
     }
 
     public CollectionModel<EntityModel<OrderDto>> getAllOrders() {
-        return getAllOrders(DEFAULT_PAGE_INT, DEFAULT_SIZE_INT, DEFAULT_DIRECTION, DEFAULT_SORT);
+        return getAllOrders(
+                ControllerPagination.DEFAULT_PAGE_INT,
+                ControllerPagination.DEFAULT_SIZE_INT,
+                ControllerPagination.DEFAULT_DIRECTION,
+                ControllerPagination.DEFAULT_SORT);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get the list of orders with pagination")
-    public CollectionModel<EntityModel<OrderDto>> getAllOrders(@RequestParam(defaultValue = DEFAULT_PAGE) int page,
-                                                               @RequestParam(defaultValue = DEFAULT_SIZE) int size,
-                                                               @RequestParam(defaultValue = DEFAULT_DIRECTION) String sortDirection,
-                                                               @RequestParam(defaultValue = DEFAULT_SORT) String sortBy
+    public CollectionModel<EntityModel<OrderDto>> getAllOrders(@RequestParam(defaultValue = ControllerPagination.DEFAULT_PAGE) int page,
+                                                               @RequestParam(defaultValue = ControllerPagination.DEFAULT_SIZE) int size,
+                                                               @RequestParam(defaultValue = ControllerPagination.DEFAULT_DIRECTION) String sortDirection,
+                                                               @RequestParam(defaultValue = ControllerPagination.DEFAULT_SORT) String sortBy
     ) {
-        List<Order> orders = orderService.getOrders(page, size, sortDirection, sortBy);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
+
+        List<Order> orders = orderService.getOrders(pageRequest);
 
         List<OrderDto> orderDtos = orders.stream()
                 .map(orderMapper::orderToOrderDto)

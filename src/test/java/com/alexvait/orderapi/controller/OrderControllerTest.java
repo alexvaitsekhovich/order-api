@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
@@ -67,7 +68,7 @@ class OrderControllerTest {
         order2.setId(2L);
 
         List<Order> orders = Arrays.asList(testOrder, order2);
-        when(orderService.getOrders(anyInt(), anyInt(), anyString(), anyString())).thenReturn(orders);
+        when(orderService.getOrders(any(PageRequest.class))).thenReturn(orders);
 
         // act
         MvcResult result = mockMvc.perform(get(OrderController.BASE_URL)
@@ -94,7 +95,7 @@ class OrderControllerTest {
                 .collect(Collectors.toList());
 
         assertEquals(expectedOrderDtoList, retunedOrderDtos);
-        verify(orderService, times(1)).getOrders(anyInt(), anyInt(), anyString(), anyString());
+        verify(orderService, times(1)).getOrders(any(PageRequest.class));
     }
 
     @Test
@@ -199,13 +200,34 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.orderParts", hasSize(2)))
                 .andReturn();
 
-
         EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<EntityModel<OrderDto>>() {
         });
         OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
 
         assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(createdOrderDto));
         verify(orderService, times(1)).save(testOrder);
+    }
+
+    @Test
+    @DisplayName("Test saving an order with invalid request body")
+    public void testSaveValidationException() throws Exception {
+
+        // arrange
+        Order order = new Order(testOrder.getNumber(), testOrder.getPaymentInformation());
+
+        OrderDto orderDto = orderDtoMapper.orderToOrderDto(order);
+        orderDto.setStatusId(null);
+
+        // act, assert
+        mockMvc.perform(post(OrderController.BASE_URL)
+                .content(jsonMapper.writeValueAsString(orderDto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.error", containsString("Address is mandatory")));
     }
 
     @Test

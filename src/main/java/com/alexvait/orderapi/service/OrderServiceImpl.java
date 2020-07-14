@@ -6,7 +6,6 @@ import com.alexvait.orderapi.exception.NotFoundException;
 import com.alexvait.orderapi.repository.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +19,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrders(int page, int size, String sortDirection, String sort) {
-        PageRequest pageReq = PageRequest.of(page, size,
-                Sort.Direction.fromString(sortDirection), sort);
-
-        Page<Order> orders = orderRepository.findAll(pageReq);
+    public List<Order> getOrders(PageRequest pageRequest) {
+        Page<Order> orders = orderRepository.findAll(pageRequest);
         return orders.getContent();
     }
 
