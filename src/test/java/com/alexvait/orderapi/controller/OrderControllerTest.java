@@ -2,9 +2,9 @@ package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.Order;
-import com.alexvait.orderapi.entity.PaymentInformation;
 import com.alexvait.orderapi.exception.IllegalOrderStatusException;
 import com.alexvait.orderapi.exception.NotFoundException;
+import com.alexvait.orderapi.hateoas.OrderDtoHateoasAssembler;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -48,7 +50,8 @@ class OrderControllerTest {
     void setUp() {
         orderDtoMapper = OrderMapper.INSTANCE;
         jsonMapper = new ObjectMapper();
-        OrderController orderController = new OrderController(orderService, orderDtoMapper);
+        OrderController orderController = new OrderController(
+                orderService, orderDtoMapper, new OrderDtoHateoasAssembler());
         mockMvc = MockMvcBuilders.standaloneSetup(orderController)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();
@@ -59,9 +62,12 @@ class OrderControllerTest {
     void testGetAllOrders() throws Exception {
 
         // arrange
-        List<Order> orders = Arrays.asList(testOrder,
-                new Order("2", new PaymentInformation(2, 200, 0)));
-        when(orderService.getOrders(0, 2, "asc", "id")).thenReturn(orders);
+        Order order2 = new Order("ABX2", testOrder.getPaymentInformation());
+        order2.setAddress(testOrder.getAddress());
+        order2.setId(2L);
+
+        List<Order> orders = Arrays.asList(testOrder, order2);
+        when(orderService.getOrders(anyInt(), anyInt(), anyString(), anyString())).thenReturn(orders);
 
         // act
         MvcResult result = mockMvc.perform(get(OrderController.BASE_URL)
@@ -76,12 +82,19 @@ class OrderControllerTest {
                 .map(orderDtoMapper::orderToOrderDto)
                 .collect(Collectors.toList());
 
-        List<OrderDto> returnedOrderDtoList = jsonMapper.readValue(
-                result.getResponse().getContentAsString(), new TypeReference<List<OrderDto>>() {
-                });
+        CollectionModel<EntityModel<OrderDto>> returnedOrderDtoListEMCollection =
+                jsonMapper.readValue(
+                        result.getResponse().getContentAsString(), new TypeReference<CollectionModel<EntityModel<OrderDto>>>() {
+                        });
 
-        assertEquals(expectedOrderDtoList, returnedOrderDtoList);
-        verify(orderService, times(1)).getOrders(0, 2, "asc", "id");
+
+        List<OrderDto> retunedOrderDtos = returnedOrderDtoListEMCollection.getContent()
+                .stream()
+                .map(EntityModel::getContent)
+                .collect(Collectors.toList());
+
+        assertEquals(expectedOrderDtoList, retunedOrderDtos);
+        verify(orderService, times(1)).getOrders(anyInt(), anyInt(), anyString(), anyString());
     }
 
     @Test
@@ -114,8 +127,14 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.orderParts", hasSize(2)))
                 .andReturn();
 
-        OrderDto returnedOrderDto = jsonMapper.readValue(result.getResponse().getContentAsString(), OrderDto.class);
-        assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(returnedOrderDto));
+        EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(
+                result.getResponse().getContentAsString(),
+                new TypeReference<EntityModel<OrderDto>>() {
+                }
+        );
+        OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
+
+        assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(createdOrderDto));
         verify(orderService, times(1)).findById(testOrder.getId());
     }
 
@@ -180,7 +199,10 @@ class OrderControllerTest {
                 .andExpect(jsonPath("$.orderParts", hasSize(2)))
                 .andReturn();
 
-        OrderDto createdOrderDto = jsonMapper.readValue(result.getResponse().getContentAsString(), OrderDto.class);
+
+        EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<EntityModel<OrderDto>>() {
+        });
+        OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
 
         assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(createdOrderDto));
         verify(orderService, times(1)).save(testOrder);

@@ -51,6 +51,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -164,6 +168,7 @@
                     <excludes>
                         <exclude>**/BootstrapData*</exclude>
                         <exclude>**/*Dto*</exclude>
+                        <exclude>**/**Config**</exclude>
                         <exclude>OrderApiApplication*</exclude>
                     </excludes>
                 </configuration>
@@ -203,8 +208,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <source>1.8</source> <!-- depending on your project -->
-                    <target>1.8</target> <!-- depending on your project -->
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
