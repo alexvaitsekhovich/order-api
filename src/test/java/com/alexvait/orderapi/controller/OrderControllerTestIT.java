@@ -1,7 +1,7 @@
 package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDto;
-import com.alexvait.orderapi.hateoas.OrderDtoHateoasAssembler;
+import com.alexvait.orderapi.helper.OrderDtoHateoasAssembler;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.mapper.OrderMapperImpl;
 import com.alexvait.orderapi.repository.OrderRepository;

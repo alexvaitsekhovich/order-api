@@ -1,11 +1,11 @@
 package com.alexvait.orderapi.service;
 
-import com.alexvait.orderapi.config.ControllerPagination;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.entity.OrderStatus;
 import com.alexvait.orderapi.entity.PaymentInformation;
 import com.alexvait.orderapi.exception.IllegalOrderStatusException;
 import com.alexvait.orderapi.exception.NotFoundException;
+import com.alexvait.orderapi.helper.ControllerPaginationHelper;
 import com.alexvait.orderapi.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,15 +50,15 @@ class OrderServiceImplTest {
         when(orderRepository.findAll(any(PageRequest.class))).thenReturn(orders);
 
         // act
-        orderService.getOrders(ControllerPagination.DEFAULT_PAGE_REQUEST);
+        orderService.getOrders(ControllerPaginationHelper.DEFAULT_PAGE_REQUEST);
 
         // assert
         ArgumentCaptor<PageRequest> pageRequestCaptor = ArgumentCaptor.forClass(PageRequest.class);
         verify(orderRepository, times(1)).findAll(pageRequestCaptor.capture());
 
         PageRequest pageRequest = pageRequestCaptor.getValue();
-        assertEquals(ControllerPagination.DEFAULT_PAGE_INT, pageRequest.getPageNumber());
-        assertEquals(ControllerPagination.DEFAULT_SIZE_INT, pageRequest.getPageSize());
+        assertEquals(ControllerPaginationHelper.DEFAULT_PAGE_INT, pageRequest.getPageNumber());
+        assertEquals(ControllerPaginationHelper.DEFAULT_SIZE_INT, pageRequest.getPageSize());
     }
 
     @Test

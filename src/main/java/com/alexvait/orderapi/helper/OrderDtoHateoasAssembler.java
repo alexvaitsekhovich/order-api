@@ -1,6 +1,5 @@
-package com.alexvait.orderapi.hateoas;
+package com.alexvait.orderapi.helper;
 
-import com.alexvait.orderapi.config.ControllerPagination;
 import com.alexvait.orderapi.controller.OrderController;
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.OrderStatus;
@@ -48,7 +47,7 @@ public class OrderDtoHateoasAssembler implements RepresentationModelAssembler<Or
                         .map(this::toModel)
                         .collect(Collectors.toList()),
                 linkTo(methodOn(OrderController.class)
-                        .getAllOrders(ControllerPagination.DEFAULT_PAGE_INT, ControllerPagination.DEFAULT_SIZE_INT, ControllerPagination.DEFAULT_DIRECTION, ControllerPagination.DEFAULT_SORT))
+                        .getAllOrders(ControllerPaginationHelper.DEFAULT_PAGE_INT, ControllerPaginationHelper.DEFAULT_SIZE_INT, ControllerPaginationHelper.DEFAULT_DIRECTION, ControllerPaginationHelper.DEFAULT_SORT))
                         .withSelfRel()
         );
     }

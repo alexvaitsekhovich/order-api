@@ -1,9 +1,9 @@
 package com.alexvait.orderapi.controller;
 
-import com.alexvait.orderapi.config.ControllerPagination;
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.Order;
-import com.alexvait.orderapi.hateoas.OrderDtoHateoasAssembler;
+import com.alexvait.orderapi.helper.ControllerPaginationHelper;
+import com.alexvait.orderapi.helper.OrderDtoHateoasAssembler;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import io.swagger.annotations.Api;
@@ -42,19 +42,19 @@ public class OrderController {
 
     public CollectionModel<EntityModel<OrderDto>> getAllOrders() {
         return getAllOrders(
-                ControllerPagination.DEFAULT_PAGE_INT,
-                ControllerPagination.DEFAULT_SIZE_INT,
-                ControllerPagination.DEFAULT_DIRECTION,
-                ControllerPagination.DEFAULT_SORT);
+                ControllerPaginationHelper.DEFAULT_PAGE_INT,
+                ControllerPaginationHelper.DEFAULT_SIZE_INT,
+                ControllerPaginationHelper.DEFAULT_DIRECTION,
+                ControllerPaginationHelper.DEFAULT_SORT);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get the list of orders with pagination")
-    public CollectionModel<EntityModel<OrderDto>> getAllOrders(@RequestParam(defaultValue = ControllerPagination.DEFAULT_PAGE) int page,
-                                                               @RequestParam(defaultValue = ControllerPagination.DEFAULT_SIZE) int size,
-                                                               @RequestParam(defaultValue = ControllerPagination.DEFAULT_DIRECTION) String sortDirection,
-                                                               @RequestParam(defaultValue = ControllerPagination.DEFAULT_SORT) String sortBy
+    public CollectionModel<EntityModel<OrderDto>> getAllOrders(@RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_PAGE) int page,
+                                                               @RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_SIZE) int size,
+                                                               @RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_DIRECTION) String sortDirection,
+                                                               @RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_SORT) String sortBy
     ) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
 

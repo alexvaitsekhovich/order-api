@@ -1,9 +1,9 @@
-package com.alexvait.orderapi.config;
+package com.alexvait.orderapi.helper;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-public final class ControllerPagination {
+public final class ControllerPaginationHelper {
     public static final String DEFAULT_PAGE = "0";
     public static final int DEFAULT_PAGE_INT = Integer.parseInt(DEFAULT_PAGE);
 
