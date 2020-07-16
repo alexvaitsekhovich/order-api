@@ -16,7 +16,10 @@
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
-							""
+							"",
+							"pm.test(\"Test orders count\", function () {",
+							"    pm.expect(pm.response.json().content.length).to.eql(2);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -52,6 +55,29 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let orderData = pm.response.json();",
+							"pm.test(\"Test order data\", function () {",
+							"    pm.expect(orderData.id).to.eql(1);",
+							"    pm.expect(orderData.number).to.eql('AX');",
+							"    pm.expect(orderData.statusId).to.eql(0);",
+							"    pm.expect(orderData.paymentId).to.eql(1);",
+							"    pm.expect(orderData.amount).to.eql(200);",
+							"    pm.expect(orderData.discountAmount).to.eql(0);",
+							"    pm.expect(orderData.address.city).to.eql('Berlin');",
+							"    pm.expect(orderData.address.zip).to.eql('10115');",
+							"    pm.expect(orderData.address.street).to.eql('Chausseestr.');",
+							"    pm.expect(orderData.address.nr).to.eql('1');",
+							"    pm.expect(orderData.orderParts.length).to.eql(2);",
+							"    pm.expect(orderData.orderParts[0].itemId).to.eql(34);",
+							"    pm.expect(orderData.orderParts[0].itemName).to.eql('Pizza Nutella');",
+							"    pm.expect(orderData.orderParts[0].count).to.eql(1);",
+							"    pm.expect(orderData.orderParts[0].price).to.eql(1200);",
+							"    pm.expect(orderData.orderParts[1].itemId).to.eql(15);",
+							"    pm.expect(orderData.orderParts[1].itemName).to.eql('Fanta');",
+							"    pm.expect(orderData.orderParts[1].count).to.eql(2);",
+							"    pm.expect(orderData.orderParts[1].price).to.eql(150);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -80,97 +106,6 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/order",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "d0b80065-43b5-4e85-a4d3-c27278b7bc09",
-						"exec": [
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"number\":\"AX2\",\n    \"paymentId\":1,\n    \"amount\":1200,\n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/v1/orders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"orders"
-					]
-				},
-				"description": "Create an order"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/api/order/1/2",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "1fd8508c-5513-4ae6-9c58-868588c1b3d5",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/v1/orders/1/actions/fake",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"v1",
-						"orders",
-						"1",
-						"actions",
-						"fake"
-					]
-				},
-				"description": "Update an order"
-			},
-			"response": []
-		},
-		{
 			"name": "http://localhost:8080/api/v1/orders/1",
 			"event": [
 				{
@@ -181,8 +116,9 @@
 							"pm.test(\"Status code is 404\", function () {",
 							"    pm.response.to.have.status(404);",
 							"});",
+							"",
 							"pm.test(\"Body contains exception string\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"com.alexvait.orderapi.exception.NotFoundExceptio\");",
+							"    pm.expect(pm.response.json().error).to.include(\"com.alexvait.orderapi.exception.NotFoundException\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -221,8 +157,9 @@
 							"pm.test(\"Status code is 400\", function () {",
 							"    pm.response.to.have.status(400);",
 							"});",
+							"",
 							"pm.test(\"Body contains exception string\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"java.lang.NumberFormatException: For input string\");",
+							"    pm.expect(pm.response.json().error).to.include(\"java.lang.NumberFormatException: For input string\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -251,21 +188,38 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/order",
+			"name": "http://localhost:8080/api/v1/orders",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "d0b80065-43b5-4e85-a4d3-c27278b7bc09",
 						"exec": [
-							"pm.test(\"Status code is 400\", function () {",
-							"    pm.response.to.have.status(400);",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
 							"});",
-							"pm.test(\"Body matches string\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"Payment id is mandatory\");",
-							"});",
-							"pm.test(\"Body matches string\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"Amount is mandatory\");",
+							"",
+							"let orderData = pm.response.json();",
+							"pm.test(\"Test order data\", function () {",
+							"    pm.expect(orderData.id).to.eql(3);",
+							"    pm.expect(orderData.number).to.eql('AX2');",
+							"    pm.expect(orderData.statusId).to.eql(0);",
+							"    pm.expect(orderData.paymentId).to.eql(1);",
+							"    pm.expect(orderData.amount).to.eql(1200);",
+							"    pm.expect(orderData.discountAmount).to.eql(0);",
+							"    pm.expect(orderData.address.city).to.eql('Berlin');",
+							"    pm.expect(orderData.address.zip).to.eql('142');",
+							"    pm.expect(orderData.address.street).to.eql('Chausseestr.');",
+							"    pm.expect(orderData.address.nr).to.eql('1');",
+							"    pm.expect(orderData.orderParts.length).to.eql(2);",
+							"    pm.expect(orderData.orderParts[0].itemId).to.eql(3);",
+							"    pm.expect(orderData.orderParts[0].itemName).to.eql('Pizza');",
+							"    pm.expect(orderData.orderParts[0].count).to.eql(1);",
+							"    pm.expect(orderData.orderParts[0].price).to.eql(1000);",
+							"    pm.expect(orderData.orderParts[1].itemId).to.eql(4);",
+							"    pm.expect(orderData.orderParts[1].itemName).to.eql('Fanta');",
+							"    pm.expect(orderData.orderParts[1].count).to.eql(1);",
+							"    pm.expect(orderData.orderParts[1].price).to.eql(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -278,8 +232,66 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number\":\"AX2\",\n    \"paymentId\":1,\n    \"amount\":1200,\n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				},
+				"description": "Create an order"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0b80065-43b5-4e85-a4d3-c27278b7bc09",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Missing parameters described\", function () {",
+							"    pm.expect(pm.response.json().errors).to.include(\"Amount is mandatory\");",
+							"    pm.expect(pm.response.json().errors).to.include(\"Payment id is mandatory\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -304,12 +316,106 @@
 						"orders"
 					]
 				},
-				"description": "Create order missing fields"
+				"description": "Create order with one missing field"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/order/1/2",
+			"name": "http://localhost:8080/api/v1/orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e5aa780a-c8bd-400b-919a-bf2219d2282f",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Missing parameters described\", function () {",
+							"    pm.expect(pm.response.json().error).to.include(\"Amount is mandatory\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number\":\"AX2\",\n    \"paymentId\":0,\n     \n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				},
+				"description": "Create order with one missing field\n"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/orders/1/actions/fake",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1fd8508c-5513-4ae6-9c58-868588c1b3d5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Test order status changed\", function () {",
+							"    pm.expect(pm.response.json().statusId).to.eql(-2);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/1/actions/fake",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1",
+						"actions",
+						"fake"
+					]
+				},
+				"description": "Update an order"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/orders/1/actions/random",
 			"event": [
 				{
 					"listen": "test",
@@ -319,9 +425,11 @@
 							"pm.test(\"Status code is 400\", function () {",
 							"    pm.response.to.have.status(400);",
 							"});",
-							"pm.test(\"Body matches string\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"com.alexvait.orderapi.exception.IllegalOrderStatusException: Illegal order action\");",
-							"});"
+							"",
+							"pm.test(\"Body contains exception string\", function () {",
+							"    pm.expect(pm.response.json().error).to.include(\"com.alexvait.orderapi.exception.IllegalOrderStatusException: Illegal order action: random\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -347,6 +455,46 @@
 					]
 				},
 				"description": "Update order illegal status"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dfbad991-a84b-4f12-a818-f0e9c86c9771",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Test orders count\", function () {",
+							"    pm.expect(pm.response.json().content.length).to.eql(3);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				},
+				"description": "Get all orders after adding a new one"
 			},
 			"response": []
 		}
