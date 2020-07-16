@@ -40,10 +40,21 @@ functional testing:
   dependencies:
     - build a jar
 
-deploy to dockerhub:
+deploy to docker hub:
   stage: deploy
-  image: alpine
+  image: alpine:latest
+  variables:
+    ARTIFACT_NAME: order-api-1.0.$CI_PIPELINE_IID.jar
+    DOCKER_IMAGE: order-api
+    DOCKER_REPO: alexvaitsekhovich
   script:
-    - echo "deploy"
+    - apk update && apk add --no-cache docker-cli
+    - docker login -u "alexvaitsekhovich" -p "${DOCKERHUB_PASSWORD}"
+    - echo "Building image $DOCKER_IMAGE"
+    - docker build -t "${DOCKER_REPO}"/"${DOCKER_IMAGE}" .
+    - echo "Test running $DOCKER_IMAGE"
+    - docker run "${DOCKER_REPO}"/"${DOCKER_IMAGE}"
+    - echo "Pushing $DOCKER_IMAGE to docker hub"
+    - docker push "${DOCKER_REPO}"/"${DOCKER_IMAGE}":latest
   only:
     - master
