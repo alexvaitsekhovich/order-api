@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ActiveProfiles("it")
+@ActiveProfiles("testing")
 @DisplayName("Integration test for Order controller")
 class OrderControllerTestIT {
 

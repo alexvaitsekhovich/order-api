@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ActiveProfiles("it")
+@ActiveProfiles("testing")
 @DisplayName("Test order repository")
 class OrderRepositoryTestIT {
 
