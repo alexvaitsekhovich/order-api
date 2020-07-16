@@ -129,6 +129,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>spring-boot</classifier>
+                            <mainClass>
+                                com.alexvait.orderapi.OrderApiApplication
+                            </mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -169,7 +182,7 @@
                         <exclude>**/BootstrapData*</exclude>
                         <exclude>**/*Dto*</exclude>
                         <exclude>**/*Config*</exclude>
-                        <exclude>**/OrderApiApplication*</exclude>
+                        <exclude>**/*OrderApiApplication*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

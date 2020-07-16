@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@ActiveProfiles("it")
+@ActiveProfiles("testing")
 @DisplayName("Integration test for Order service implementation")
 class OrderServiceImplTestIT {
 

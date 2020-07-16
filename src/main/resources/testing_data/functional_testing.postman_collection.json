@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "71b9fa3c-f3e4-49cf-9b56-fd55f48c4c37",
+		"name": "order api functional testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/v1/orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cd1a774d-9548-4578-8b66-67c2d9f9643c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				},
+				"description": "Get all orders"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/orders/1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ba39299f-cadf-4fa0-8186-94135a97290c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1"
+					]
+				},
+				"description": "Get a single order"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0b80065-43b5-4e85-a4d3-c27278b7bc09",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number\":\"AX2\",\n    \"paymentId\":1,\n    \"amount\":1200,\n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				},
+				"description": "Create an order"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/order/1/2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1fd8508c-5513-4ae6-9c58-868588c1b3d5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/1/actions/fake",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1",
+						"actions",
+						"fake"
+					]
+				},
+				"description": "Update an order"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/orders/1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ba39299f-cadf-4fa0-8186-94135a97290c",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Body contains exception string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"com.alexvait.orderapi.exception.NotFoundExceptio\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"12"
+					]
+				},
+				"description": "Order not found"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/v1/orders/a",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5692d064-c248-4d9f-a998-6f7787ab1e2f",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Body contains exception string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"java.lang.NumberFormatException: For input string\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"a"
+					]
+				},
+				"description": "Get order with string as id"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0b80065-43b5-4e85-a4d3-c27278b7bc09",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Payment id is mandatory\");",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Amount is mandatory\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"number\":\"AX2\",\n    \n   \n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				},
+				"description": "Create order missing fields"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/order/1/2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1fd8508c-5513-4ae6-9c58-868588c1b3d5",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"com.alexvait.orderapi.exception.IllegalOrderStatusException: Illegal order action\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/orders/1/actions/random",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"orders",
+						"1",
+						"actions",
+						"random"
+					]
+				},
+				"description": "Update order illegal status"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
