@@ -42,7 +42,6 @@ functional testing:
 
 deploy to docker hub:
   stage: deploy
-  image: alexvaitsekhovich/ubuntu-docker-inside
   variables:
     ARTIFACT_NAME: order-api-1.0.$CI_PIPELINE_IID.jar
     DOCKER_IMAGE: order-api
@@ -50,7 +49,7 @@ deploy to docker hub:
   script:
     - docker login -u "alexvaitsekhovich" -p "${DOCKERHUB_PASSWORD}"
     - echo "Building image $DOCKER_IMAGE"
-    - docker build -t "${DOCKER_REPO}"/"${DOCKER_IMAGE}" .
+    - docker build -t "${DOCKER_REPO}"/"${DOCKER_IMAGE}" src/main/resources/dockerfiles/
     - echo "Test running $DOCKER_IMAGE"
     - docker run "${DOCKER_REPO}"/"${DOCKER_IMAGE}"
     - echo "Pushing $DOCKER_IMAGE to docker hub"
