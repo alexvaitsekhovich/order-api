@@ -70,7 +70,7 @@ public class OrderController {
     @GetMapping("/{orderId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Get the order by id")
-    public EntityModel<OrderDto> getOrderById(@PathVariable long orderId) {
+    public EntityModel<OrderDto> getOrderById(@PathVariable("orderId") long orderId) {
         log.info("Getting order by id #" + orderId);
         return hateoasAssembler.toModel(
                 orderMapper.orderToOrderDto(
@@ -94,7 +94,7 @@ public class OrderController {
     @PatchMapping("/{orderId}/actions/{action}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "Update order status", notes = "Valid actions: 'create', 'approve', 'deliver', 'cancel', 'fake'")
-    public EntityModel<OrderDto> updateStatus(@PathVariable long orderId, @PathVariable String action) {
+    public EntityModel<OrderDto> updateStatus(@PathVariable("orderId") long orderId, @PathVariable String action) {
         log.info(String.format("Updating status of the order #%d with action '%s'", orderId, action));
         return hateoasAssembler.toModel(
                 orderMapper.orderToOrderDto(

@@ -6,6 +6,7 @@ import com.alexvait.orderapi.entity.OrderStatus;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.alexvait.orderapi.helper.ControllerPaginationHelper.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -26,7 +28,8 @@ public class OrderDtoHateoasAssembler implements RepresentationModelAssembler<Or
         EntityModel<OrderDto> orderDtoEntityModel = EntityModel.of(
                 orderDto,
                 linkTo(methodOn(OrderController.class).getOrderById(orderDto.getId())).withSelfRel(),
-                linkTo(methodOn(OrderController.class).getAllOrders()).withRel("orders"));
+                createGetAllOrdersLink(DEFAULT_PAGE_INT, DEFAULT_SIZE_INT, DEFAULT_DIRECTION, DEFAULT_SORT, "orders")
+        );
 
         Arrays.stream(OrderStatus.values())
                 .filter(orderStatus -> orderStatus.getId() != orderDto.getStatusId())
@@ -46,9 +49,7 @@ public class OrderDtoHateoasAssembler implements RepresentationModelAssembler<Or
                 StreamSupport.stream(orderDtos.spliterator(), false)
                         .map(this::toModel)
                         .collect(Collectors.toList()),
-                linkTo(methodOn(OrderController.class)
-                        .getAllOrders(ControllerPaginationHelper.DEFAULT_PAGE_INT, ControllerPaginationHelper.DEFAULT_SIZE_INT, ControllerPaginationHelper.DEFAULT_DIRECTION, ControllerPaginationHelper.DEFAULT_SORT))
-                        .withSelfRel()
+                createGetAllOrdersLink(DEFAULT_PAGE_INT, DEFAULT_SIZE_INT, DEFAULT_DIRECTION, DEFAULT_SORT, IanaLinkRelations.SELF_VALUE)
         );
     }
 
@@ -59,21 +60,22 @@ public class OrderDtoHateoasAssembler implements RepresentationModelAssembler<Or
 
         if (page > 0) {
             collectionModel.add(
-                    linkTo(methodOn(OrderController.class)
-                            .getAllOrders(page - 1, size, direction, order))
-                            .withRel(IanaLinkRelations.PREVIOUS_VALUE)
+                    createGetAllOrdersLink(page - 1, size, direction, order, IanaLinkRelations.PREVIOUS_VALUE)
             );
         }
 
         if (StreamSupport.stream(orderDtos.spliterator(), false).count() > 0) {
             collectionModel.add(
-                    linkTo(methodOn(OrderController.class)
-                            .getAllOrders(page + 1, size, direction, order))
-                            .withRel(IanaLinkRelations.NEXT_VALUE)
+                    createGetAllOrdersLink(page + 1, size, direction, order, IanaLinkRelations.NEXT_VALUE)
             );
         }
 
         return collectionModel;
     }
 
+    private Link createGetAllOrdersLink(int page, int size, String direction, String order, String rel) {
+        return linkTo(methodOn(OrderController.class)
+                .getAllOrders(page, size, direction, order))
+                .withRel(rel);
+    }
 }

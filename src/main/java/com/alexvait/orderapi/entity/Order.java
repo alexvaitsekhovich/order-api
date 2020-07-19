@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class Order {
 
     @NotNull(message = "Entity says: Creation date is mandatory")
     @Column(name = "created_on", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdOn;
+    private OffsetDateTime createdOn;
 
     @NotNull(message = "Entity says: Payment information is mandatory")
     private PaymentInformation paymentInformation;
@@ -71,6 +71,6 @@ public class Order {
 
     @PrePersist
     protected void onCreate() {
-        createdOn = LocalDateTime.now();
+        createdOn = OffsetDateTime.now();
     }
 }
