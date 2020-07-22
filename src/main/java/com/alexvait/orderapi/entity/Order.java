@@ -21,6 +21,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
     private Long id;
 
     @NotBlank(message = "Entity says: Order number is mandatory")
@@ -32,7 +33,7 @@ public class Order {
     private int statusId = OrderStatus.CREATED.getId();
 
     @NotNull(message = "Entity says: Creation date is mandatory")
-    @Column(name = "created_on", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_on", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     private OffsetDateTime createdOn;
 
     @NotNull(message = "Entity says: Payment information is mandatory")

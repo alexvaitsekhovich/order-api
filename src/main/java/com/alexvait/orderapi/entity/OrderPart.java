@@ -21,6 +21,7 @@ public class OrderPart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
     private Long id;
 
     @NotNull(message = "Entity says: Order part item id is mandatory")

@@ -14,9 +14,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,13 +85,15 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create an order")
-    public EntityModel<OrderDto> saveOrder(@Valid @RequestBody OrderDto receivedOrderDto) {
+    public ResponseEntity<OrderDto> saveOrder(@Valid @RequestBody OrderDto receivedOrderDto) throws URISyntaxException {
         log.info("Creating new order from dto : " + receivedOrderDto);
-        return hateoasAssembler.toModel(
-                orderMapper.orderToOrderDto(
-                        orderService.save(orderMapper.orderDtoToOrder(receivedOrderDto))
-                )
+
+        OrderDto orderDto = orderMapper.orderToOrderDto(
+                orderService.save(orderMapper.orderDtoToOrder(receivedOrderDto))
         );
+
+        return ResponseEntity.created(new URI(OrderController.BASE_URL + "/" + orderDto.getId())).body(orderDto);
+        //return hateoasAssembler.toModel(orderDto);
     }
 
     @PatchMapping("/{orderId}/actions/{action}")
