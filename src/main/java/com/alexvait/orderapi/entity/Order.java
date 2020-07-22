@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class Order {
 
     @Column(name = "created_on", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
     @CreationTimestamp
-    private OffsetDateTime createdOn;
+    private Timestamp createdOn;
 
     @NotNull(message = "Entity says: Payment information is mandatory")
     private PaymentInformation paymentInformation;

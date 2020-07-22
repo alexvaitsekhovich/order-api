@@ -10,7 +10,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
+@Mapper(componentModel = "spring")
 public interface OrderMapper {
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
@@ -31,4 +35,22 @@ public interface OrderMapper {
     OrderPartDto orderPartToOrderPartDto(OrderPart orderPart);
 
     OrderPart orderPartDtoToOrderPart(OrderPartDto orderPartDto);
+
+    default OffsetDateTime timestampToOffsetDateTime(Timestamp ts) {
+        if (ts != null) {
+            return OffsetDateTime.of(ts.toLocalDateTime().getYear(), ts.toLocalDateTime().getMonthValue(),
+                    ts.toLocalDateTime().getDayOfMonth(), ts.toLocalDateTime().getHour(), ts.toLocalDateTime().getMinute(),
+                    ts.toLocalDateTime().getSecond(), ts.toLocalDateTime().getNano(), ZoneOffset.UTC);
+        } else {
+            return null;
+        }
+    }
+
+    default Timestamp offsetDateTimeToTimestamp(OffsetDateTime offsetDateTime) {
+        if (offsetDateTime != null) {
+            return Timestamp.valueOf(offsetDateTime.atZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
+        } else {
+            return null;
+        }
+    }
 }
