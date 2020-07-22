@@ -25,11 +25,6 @@ public class ApiError {
             return;
         }
 
-        if (errors.size() == 1) {
-            errorBody.put("error", errors.get(0));
-            return;
-        }
-
         errorBody.put("errors", errors);
     }
 

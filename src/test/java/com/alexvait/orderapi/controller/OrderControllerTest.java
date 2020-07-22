@@ -165,7 +165,7 @@ class OrderControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.error", containsString("java.lang.NumberFormatException")));
+                .andExpect(jsonPath("$.errors[0]", containsString("java.lang.NumberFormatException")));
     }
 
     @Test
@@ -227,7 +227,7 @@ class OrderControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.error", containsString("Address is mandatory")));
+                .andExpect(jsonPath("$.errors[0]", containsString("Address is mandatory")));
     }
 
     @Test
@@ -264,7 +264,7 @@ class OrderControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.error", containsString("com.alexvait.orderapi.exception.IllegalOrderStatusException")));
+                .andExpect(jsonPath("$.errors[0]", containsString("com.alexvait.orderapi.exception.IllegalOrderStatusException")));
         verify(orderService, times(1)).changeStatus(id, action);
     }
 }
