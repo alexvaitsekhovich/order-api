@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "order_parts")
@@ -22,6 +19,7 @@ public class OrderPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
+    @Null // setting the id shall be done only by application
     private Long id;
 
     @NotNull(message = "Entity says: Order part item id is mandatory")
@@ -36,10 +34,12 @@ public class OrderPart {
     @NotNull(message = "Entity says: Order part item count is mandatory")
     @Min(1)
     @Column(name = "count")
+    @Positive
     private Integer count;
 
     @NotNull(message = "Entity says: Order part item price is mandatory")
     @Column(name = "price")
+    @Positive
     private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)

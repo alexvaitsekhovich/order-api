@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,9 +25,11 @@ public class OrderPartDto {
 
     @NotNull(message = "Item count is mandatory")
     @ApiModelProperty(required = true)
+    @Positive
     private Integer count;
 
     @NotNull(message = "Item price is mandatory")
     @ApiModelProperty(value = "price for a single item, will be multiplied with the count value", required = true)
+    @PositiveOrZero
     private Integer price;
 }

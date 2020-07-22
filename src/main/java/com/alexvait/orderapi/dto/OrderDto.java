@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +23,19 @@ public class OrderDto {
 
     @NotNull(message = "Payment id is mandatory")
     @ApiModelProperty(required = true)
+    @Positive
     private Integer paymentId;
 
     @NotNull(message = "Amount is mandatory")
     @ApiModelProperty(value = "Order amount in smallest currency, as integer", required = true)
+    @Positive
     private Integer amount;
 
+    @PositiveOrZero
     private Integer discountAmount;
+
+    @PastOrPresent
+    private OffsetDateTime createdOn;
 
     @NotNull(message = "Address is mandatory")
     @ApiModelProperty(required = true)

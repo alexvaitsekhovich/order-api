@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @Embeddable
 @Data
@@ -20,8 +21,10 @@ public class PaymentInformation {
 
     @NotBlank(message = "Entity says: Amount is mandatory")
     @Column(name = "amount")
+    @Positive
     private Integer amount;
 
     @Column(name = "discount_amount")
+    @Positive
     private Integer discountAmount;
 }
