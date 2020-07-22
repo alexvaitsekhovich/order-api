@@ -2,11 +2,11 @@ package com.alexvait.orderapi.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,6 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-    @Null // setting the id shall be done only by application
     private Long id;
 
     @NotBlank(message = "Entity says: Order number is mandatory")
@@ -34,8 +33,8 @@ public class Order {
     @Column(name = "status_id")
     private int statusId = OrderStatus.CREATED.getId();
 
-    @NotNull(message = "Entity says: Creation date is mandatory")
     @Column(name = "created_on", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
+    @CreationTimestamp
     private OffsetDateTime createdOn;
 
     @NotNull(message = "Entity says: Payment information is mandatory")
@@ -72,8 +71,10 @@ public class Order {
         this.statusId = statusId;
     }
 
+/*
     @PrePersist
     protected void onCreate() {
         createdOn = OffsetDateTime.now();
     }
+*/
 }

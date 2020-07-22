@@ -8,6 +8,7 @@ import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(OrderController.BASE_URL)
 @Slf4j
+@AllArgsConstructor
 @Api(tags = {"Order controller"})
 public class OrderController {
 
@@ -34,14 +36,6 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
     private final OrderDtoHateoasAssembler hateoasAssembler;
-
-    public OrderController(OrderService orderService,
-                           OrderMapper orderMapper,
-                           OrderDtoHateoasAssembler hateoasAssembler) {
-        this.orderService = orderService;
-        this.orderMapper = orderMapper;
-        this.hateoasAssembler = hateoasAssembler;
-    }
 
     public CollectionModel<EntityModel<OrderDto>> getAllOrders() {
         return getAllOrders(

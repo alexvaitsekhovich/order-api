@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Data
 public class AddressDto {
+
     private Long id;
 
     @NotBlank(message = "City is mandatory")

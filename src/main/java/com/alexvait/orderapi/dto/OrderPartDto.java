@@ -13,6 +13,7 @@ import javax.validation.constraints.PositiveOrZero;
 @AllArgsConstructor
 @Data
 public class OrderPartDto {
+
     private Long id;
 
     @NotNull(message = "Item id is mandatory")

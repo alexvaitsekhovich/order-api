@@ -19,7 +19,6 @@ public class OrderPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-    @Null // setting the id shall be done only by application
     private Long id;
 
     @NotNull(message = "Entity says: Order part item id is mandatory")
@@ -27,19 +26,19 @@ public class OrderPart {
     private Long itemId;
 
     @NotBlank(message = "Entity says: Order part item name is mandatory")
-    @Size(min=2, max = 255)
+    @Size(min = 2, max = 255)
     @Column(name = "item_name")
     private String itemName;
 
     @NotNull(message = "Entity says: Order part item count is mandatory")
     @Min(1)
     @Column(name = "count")
-    @Positive
+    @Positive(message = "Entity says: Count of order part shall be positive")
     private Integer count;
 
     @NotNull(message = "Entity says: Order part item price is mandatory")
     @Column(name = "price")
-    @Positive
+    @Positive(message = "Entity says: Price of order part shall be positive")
     private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)

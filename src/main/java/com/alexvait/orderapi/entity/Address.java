@@ -8,7 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -21,7 +20,6 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
-    @Null // setting the id shall be done only by application
     private Long id;
 
     @NotBlank(message = "Entity says: City is mandatory")
@@ -30,7 +28,7 @@ public class Address {
     private String city;
 
     @NotBlank(message = "Entity says: Zip code is mandatory, between 3 and 10 digits")
-    @Size(min=3, max = 10, message = "Zip code size must be between 3 and 10")
+    @Size(min = 3, max = 10, message = "Zip code size must be between 3 and 10")
     @Column(name = "zip")
     private String zip;
 
