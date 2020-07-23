@@ -18,7 +18,7 @@
 							"});",
 							"",
 							"pm.test(\"Test orders count\", function () {",
-							"    pm.expect(pm.response.json().content.length).to.eql(2);",
+							"    pm.expect(pm.response.json().length).to.eql(2);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -471,7 +471,7 @@
 							"});",
 							"",
 							"pm.test(\"Test orders count\", function () {",
-							"    pm.expect(pm.response.json().content.length).to.eql(3);",
+							"    pm.expect(pm.response.json().length).to.eql(3);",
 							"});"
 						],
 						"type": "text/javascript"

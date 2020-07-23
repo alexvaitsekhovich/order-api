@@ -1,7 +1,6 @@
 package com.alexvait.orderapi.service;
 
 import com.alexvait.orderapi.entity.Order;
-import com.alexvait.orderapi.helper.ControllerPaginationHelper;
 import com.alexvait.orderapi.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +37,7 @@ class OrderServiceImplTestIT {
         // arrange
 
         // act
-        List<Order> orders = orderService.getOrders(ControllerPaginationHelper.DEFAULT_PAGE_REQUEST);
+        List<Order> orders = orderService.getOrders();
 
         // assert
         assertEquals(2, orders.size());

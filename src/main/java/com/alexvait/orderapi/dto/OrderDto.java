@@ -1,7 +1,6 @@
 package com.alexvait.orderapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,13 +22,11 @@ public class OrderDto {
     private Integer statusId;
 
     @NotNull(message = "Payment id is mandatory")
-    @ApiModelProperty(required = true)
     @Positive
     private Integer paymentId;
 
     @NotNull(message = "Amount is mandatory")
     @Positive(message = "Amount shall be greater than 0")
-    @ApiModelProperty(value = "Order amount in smallest currency, as integer", required = true)
     private Integer amount;
 
     @PositiveOrZero
@@ -39,7 +36,6 @@ public class OrderDto {
     private OffsetDateTime createdOn;
 
     @NotNull(message = "Address is mandatory")
-    @ApiModelProperty(required = true)
     private AddressDto address;
 
     @NotNull(message = "An array of order parts is mandatory")

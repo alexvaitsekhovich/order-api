@@ -5,20 +5,17 @@ import com.alexvait.orderapi.entity.OrderStatus;
 import com.alexvait.orderapi.entity.PaymentInformation;
 import com.alexvait.orderapi.exception.IllegalOrderStatusException;
 import com.alexvait.orderapi.exception.NotFoundException;
-import com.alexvait.orderapi.helper.ControllerPaginationHelper;
 import com.alexvait.orderapi.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
@@ -46,19 +43,14 @@ class OrderServiceImplTest {
     void getOrders() {
 
         // arrange
-        Page<Order> orders = new PageImpl<>(Collections.singletonList(testOrder));
-        when(orderRepository.findAll(any(PageRequest.class))).thenReturn(orders);
+        List<Order> orders = new ArrayList<>(Collections.singletonList(testOrder));
+        when(orderRepository.findAll()).thenReturn(orders);
 
         // act
-        orderService.getOrders(ControllerPaginationHelper.DEFAULT_PAGE_REQUEST);
+        List<Order> returnedOrders = orderService.getOrders();
 
         // assert
-        ArgumentCaptor<PageRequest> pageRequestCaptor = ArgumentCaptor.forClass(PageRequest.class);
-        verify(orderRepository, times(1)).findAll(pageRequestCaptor.capture());
-
-        PageRequest pageRequest = pageRequestCaptor.getValue();
-        assertEquals(ControllerPaginationHelper.DEFAULT_PAGE_INT, pageRequest.getPageNumber());
-        assertEquals(ControllerPaginationHelper.DEFAULT_SIZE_INT, pageRequest.getPageSize());
+        assertEquals(orders, returnedOrders);
     }
 
     @Test

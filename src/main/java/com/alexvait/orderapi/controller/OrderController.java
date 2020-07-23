@@ -1,20 +1,10 @@
 package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDto;
-import com.alexvait.orderapi.entity.Order;
-import com.alexvait.orderapi.helper.ControllerPaginationHelper;
-import com.alexvait.orderapi.helper.OrderDtoHateoasAssembler;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,57 +18,30 @@ import java.util.stream.Collectors;
 @RequestMapping(OrderController.BASE_URL)
 @Slf4j
 @AllArgsConstructor
-@Api(tags = {"Order controller"})
 public class OrderController {
 
     public static final String BASE_URL = "/api/v1/orders";
 
     private final OrderService orderService;
     private final OrderMapper orderMapper;
-    private final OrderDtoHateoasAssembler hateoasAssembler;
-
-    public CollectionModel<EntityModel<OrderDto>> getAllOrders() {
-        return getAllOrders(
-                ControllerPaginationHelper.DEFAULT_PAGE_INT,
-                ControllerPaginationHelper.DEFAULT_SIZE_INT,
-                ControllerPaginationHelper.DEFAULT_DIRECTION,
-                ControllerPaginationHelper.DEFAULT_SORT);
-    }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get the list of orders with pagination")
-    public CollectionModel<EntityModel<OrderDto>> getAllOrders(@RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_PAGE) int page,
-                                                               @RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_SIZE) int size,
-                                                               @RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_DIRECTION) String sortDirection,
-                                                               @RequestParam(defaultValue = ControllerPaginationHelper.DEFAULT_SORT) String sortBy
-    ) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
-
-        List<Order> orders = orderService.getOrders(pageRequest);
-
-        List<OrderDto> orderDtos = orders.stream()
+    public ResponseEntity<List<OrderDto>> getAllOrders() {
+        List<OrderDto> orderDtos = orderService.getOrders()
+                .stream()
                 .map(orderMapper::orderToOrderDto)
                 .collect(Collectors.toList());
 
-        return hateoasAssembler.toCollectionModelWithPagination(orderDtos, page, size, sortDirection, sortBy);
+        return ResponseEntity.ok(orderDtos);
     }
 
     @GetMapping("/{orderId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get the order by id")
-    public EntityModel<OrderDto> getOrderById(@PathVariable("orderId") long orderId) {
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") long orderId) {
         log.info("Getting order by id #" + orderId);
-        return hateoasAssembler.toModel(
-                orderMapper.orderToOrderDto(
-                        orderService.findById(orderId)
-                )
-        );
+        return ResponseEntity.ok(orderMapper.orderToOrderDto(orderService.findById(orderId)));
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation(value = "Create an order")
     public ResponseEntity<OrderDto> saveOrder(@Valid @RequestBody OrderDto receivedOrderDto) throws URISyntaxException {
         log.info("Creating new order from dto : " + receivedOrderDto);
 
@@ -87,18 +50,11 @@ public class OrderController {
         );
 
         return ResponseEntity.created(new URI(OrderController.BASE_URL + "/" + orderDto.getId())).body(orderDto);
-        //return hateoasAssembler.toModel(orderDto);
     }
 
     @PatchMapping("/{orderId}/actions/{action}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Update order status", notes = "Valid actions: 'create', 'approve', 'deliver', 'cancel', 'fake'")
-    public EntityModel<OrderDto> updateStatus(@PathVariable("orderId") long orderId, @PathVariable String action) {
+    public ResponseEntity<OrderDto> updateStatus(@PathVariable("orderId") long orderId, @PathVariable String action) {
         log.info(String.format("Updating status of the order #%d with action '%s'", orderId, action));
-        return hateoasAssembler.toModel(
-                orderMapper.orderToOrderDto(
-                        orderService.changeStatus(orderId, action)
-                )
-        );
+        return ResponseEntity.ok(orderMapper.orderToOrderDto(orderService.changeStatus(orderId, action)));
     }
 }

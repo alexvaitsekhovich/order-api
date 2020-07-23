@@ -1,7 +1,6 @@
 package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDto;
-import com.alexvait.orderapi.helper.OrderDtoHateoasAssembler;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.mapper.OrderMapperImpl;
 import com.alexvait.orderapi.repository.OrderRepository;
@@ -12,14 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,10 +36,7 @@ class OrderControllerTestIT {
     @BeforeEach
     void setUp() {
         orderMapper = new OrderMapperImpl();
-        orderController = new OrderController(
-                new OrderServiceImpl(orderRepository),
-                orderMapper,
-                new OrderDtoHateoasAssembler());
+        orderController = new OrderController(new OrderServiceImpl(orderRepository), orderMapper);
     }
 
     @Test
@@ -53,13 +46,9 @@ class OrderControllerTestIT {
         // arrange
 
         // act
-        CollectionModel<EntityModel<OrderDto>> resultOrders = orderController.getAllOrders();
+        List<OrderDto> orders = orderController.getAllOrders().getBody();
 
         // assert
-        List<OrderDto> orders = resultOrders.getContent()
-                .stream()
-                .map(EntityModel::getContent)
-                .collect(Collectors.toList());
 
         OrderDto order = orders.get(0);
 

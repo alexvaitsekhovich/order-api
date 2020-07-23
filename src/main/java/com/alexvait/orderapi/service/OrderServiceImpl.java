@@ -5,8 +5,6 @@ import com.alexvait.orderapi.entity.OrderStatus;
 import com.alexvait.orderapi.exception.NotFoundException;
 import com.alexvait.orderapi.repository.OrderRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +15,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public List<Order> getOrders(PageRequest pageRequest) {
-        Page<Order> orders = orderRepository.findAll(pageRequest);
-        return orders.getContent();
+    public List<Order> getOrders() {
+        return orderRepository.findAll();
     }
 
     @Override

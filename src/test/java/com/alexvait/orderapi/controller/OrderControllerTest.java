@@ -4,7 +4,6 @@ import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.exception.IllegalOrderStatusException;
 import com.alexvait.orderapi.exception.NotFoundException;
-import com.alexvait.orderapi.helper.OrderDtoHateoasAssembler;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,8 +48,7 @@ class OrderControllerTest {
     void setUp() {
         orderDtoMapper = OrderMapper.INSTANCE;
         jsonMapper = new ObjectMapper();
-        OrderController orderController = new OrderController(
-                orderService, orderDtoMapper, new OrderDtoHateoasAssembler());
+        OrderController orderController = new OrderController(orderService, orderDtoMapper);
         mockMvc = MockMvcBuilders.standaloneSetup(orderController)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();
@@ -68,7 +64,7 @@ class OrderControllerTest {
         order2.setId(2L);
 
         List<Order> orders = Arrays.asList(testOrder, order2);
-        when(orderService.getOrders(any(PageRequest.class))).thenReturn(orders);
+        when(orderService.getOrders()).thenReturn(orders);
 
         // act
         MvcResult result = mockMvc.perform(get(OrderController.BASE_URL)
@@ -83,19 +79,14 @@ class OrderControllerTest {
                 .map(orderDtoMapper::orderToOrderDto)
                 .collect(Collectors.toList());
 
-        CollectionModel<EntityModel<OrderDto>> returnedOrderDtoListEMCollection =
+        List<OrderDto> retunedOrderDtos =
                 jsonMapper.readValue(
-                        result.getResponse().getContentAsString(), new TypeReference<CollectionModel<EntityModel<OrderDto>>>() {
+                        result.getResponse().getContentAsString(), new TypeReference<List<OrderDto>>() {
                         });
 
 
-        List<OrderDto> retunedOrderDtos = returnedOrderDtoListEMCollection.getContent()
-                .stream()
-                .map(EntityModel::getContent)
-                .collect(Collectors.toList());
-
         assertEquals(expectedOrderDtoList, retunedOrderDtos);
-        verify(orderService, times(1)).getOrders(any(PageRequest.class));
+        verify(orderService, times(1)).getOrders();
     }
 
     @Test
