@@ -1,5 +1,6 @@
 package com.alexvait.orderapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,7 @@ public class OrderDto {
     @PositiveOrZero
     private Integer discountAmount;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime createdOn;
 
     @NotNull(message = "Address is mandatory")

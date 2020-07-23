@@ -1,6 +1,5 @@
 package com.alexvait.orderapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -43,7 +42,6 @@ public class OrderPart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    @JsonIgnore
     @ToString.Exclude
     private Order order;
 
