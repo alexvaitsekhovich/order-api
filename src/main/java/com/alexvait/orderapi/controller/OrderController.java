@@ -1,10 +1,14 @@
 package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDto;
+import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +29,30 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    @GetMapping
     public ResponseEntity<List<OrderDto>> getAllOrders() {
-        List<OrderDto> orderDtos = orderService.getOrders()
+        return null;
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<OrderDto>> getAllOrders(@RequestParam(value = "page", required = false) Integer pageNumber,
+                                                       @RequestParam(value = "size", required = false) Integer pageSize) {
+
+
+        if (pageNumber == null || pageNumber < 0) {
+            pageNumber = 0;
+        }
+
+        if (pageSize == null || pageSize < 1) {
+            pageSize = 2;
+        }
+
+        Page<Order> ordersPage = orderService.getOrders(PageRequest.of(pageNumber, pageSize));
+        List<OrderDto> ordersDto = ordersPage.getContent()
                 .stream()
                 .map(orderMapper::orderToOrderDto)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(orderDtos);
+        return ResponseEntity.ok(new PageImpl<>(ordersDto, ordersPage.getPageable(), ordersPage.getTotalElements()));
     }
 
     @GetMapping("/{orderId}")
