@@ -20,11 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
+import static com.alexvait.orderapi.testobjects.TestData.testOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,51 +38,18 @@ class OrderControllerTest {
 
     private OrderMapper orderDtoMapper;
     private ObjectMapper jsonMapper;
+
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
         orderDtoMapper = OrderMapper.INSTANCE;
         jsonMapper = new ObjectMapper();
-        OrderController orderController = new OrderController(orderService, orderDtoMapper);
+
+        OrderController orderController = new OrderController(orderService, orderDtoMapper, null);
         mockMvc = MockMvcBuilders.standaloneSetup(orderController)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();
-    }
-
-    @Test
-    @DisplayName("Test getting all orders")
-    void testGetAllOrders() throws Exception {
-
-        // arrange
-        Order order2 = new Order("ABX2", testOrder.getPaymentInformation());
-        order2.setAddress(testOrder.getAddress());
-        order2.setId(2L);
-
-        List<Order> orders = Arrays.asList(testOrder, order2);
-        when(orderService.getOrders()).thenReturn(orders);
-
-        // act
-        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
-
-        // assert
-        List<OrderDto> expectedOrderDtoList = orders.stream()
-                .map(orderDtoMapper::orderToOrderDto)
-                .collect(Collectors.toList());
-
-        List<OrderDto> retunedOrderDtos =
-                jsonMapper.readValue(
-                        result.getResponse().getContentAsString(), new TypeReference<List<OrderDto>>() {
-                        });
-
-
-        assertEquals(expectedOrderDtoList, retunedOrderDtos);
-        verify(orderService, times(1)).getOrders();
     }
 
     @Test

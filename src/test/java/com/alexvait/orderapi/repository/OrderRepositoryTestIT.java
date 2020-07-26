@@ -31,7 +31,7 @@ class OrderRepositoryTestIT {
 
         // assert
         assertEquals(1, order.getId());
-        assertEquals("AX", order.getNumber());
+        assertEquals("AX1", order.getNumber());
         assertEquals(0, order.getStatusId());
         assertEquals(1, order.getPaymentInformation().getPaymentId());
         assertEquals(200, order.getPaymentInformation().getAmount());

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
+import static com.alexvait.orderapi.testobjects.TestData.testOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Test Order part entity")

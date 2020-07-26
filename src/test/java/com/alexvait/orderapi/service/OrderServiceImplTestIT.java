@@ -1,6 +1,8 @@
 package com.alexvait.orderapi.service;
 
-import com.alexvait.orderapi.entity.Order;
+import com.alexvait.orderapi.dto.OrderDto;
+import com.alexvait.orderapi.dto.OrderDtoPagedList;
+import com.alexvait.orderapi.mapper.OrderMapperImpl;
 import com.alexvait.orderapi.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
+import static com.alexvait.orderapi.testobjects.TestData.testPageable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
@@ -28,7 +31,7 @@ class OrderServiceImplTestIT {
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderServiceImpl(orderRepository);
+        orderService = new OrderServiceImpl(orderRepository, new OrderMapperImpl());
     }
 
     @Test
@@ -37,15 +40,16 @@ class OrderServiceImplTestIT {
         // arrange
 
         // act
-        List<Order> orders = orderService.getOrders();
+        OrderDtoPagedList ordersDtoPagedList = orderService.getOrders(testPageable);
 
         // assert
-        assertEquals(2, orders.size());
-
-        Order order = orders.get(0);
+        List<OrderDto> orderDtoList = ordersDtoPagedList.getContent();
+        assertEquals(2, orderDtoList.size());
+        assertEquals(2, orderDtoList.size());
+        OrderDto order = orderDtoList.get(0);
 
         assertEquals(1, order.getId());
-        assertEquals("AX", order.getNumber());
+        assertEquals("AX1", order.getNumber());
         assertEquals(2, order.getOrderParts().size());
     }
 }

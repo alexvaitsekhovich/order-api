@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 
-import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
+import static com.alexvait.orderapi.testobjects.TestData.testOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 

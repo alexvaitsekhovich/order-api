@@ -1,32 +1,34 @@
 package com.alexvait.orderapi.service;
 
+import com.alexvait.orderapi.dto.OrderDtoPagedList;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.entity.OrderStatus;
 import com.alexvait.orderapi.exception.NotFoundException;
+import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-
-    public List<Order> getOrders() {
-        return null;
-    }
+    private final OrderMapper orderMapper;
 
     @Override
-    public Page<Order> getOrders(PageRequest pageRequest) {
-        Page<Order> orderPage = orderRepository.findAll(pageRequest);
+    public OrderDtoPagedList getOrders(Pageable pageable) {
 
-        return new PageImpl<>(
-                orderPage.getContent(),
+        Page<Order> orderPage = orderRepository.findAll(pageable);
+
+        return new OrderDtoPagedList(
+                orderPage.getContent()
+                        .stream()
+                        .map(orderMapper::orderToOrderDto)
+                        .collect(Collectors.toList()),
                 orderPage.getPageable(),
                 orderPage.getTotalElements()
         );
@@ -35,7 +37,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(Long id) {
         return orderRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Order with id %d not found", id)));
+                .orElseThrow(
+                        () -> new NotFoundException(String.format("Order with id %d not found", id))
+                );
     }
 
     @Override
