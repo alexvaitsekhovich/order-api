@@ -1,10 +1,13 @@
 package com.alexvait.orderapi.service;
 
+import com.alexvait.orderapi.dto.OrderDto;
+import com.alexvait.orderapi.dto.OrderDtoPagedList;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.entity.OrderStatus;
 import com.alexvait.orderapi.entity.PaymentInformation;
 import com.alexvait.orderapi.exception.IllegalOrderStatusException;
 import com.alexvait.orderapi.exception.NotFoundException;
+import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,13 +15,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.alexvait.orderapi.testobjects.TestOrder.testOrder;
+import static com.alexvait.orderapi.testobjects.TestData.testOrder;
+import static com.alexvait.orderapi.testobjects.TestData.testPageable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,10 +37,12 @@ class OrderServiceImplTest {
     private OrderRepository orderRepository;
 
     private OrderService orderService;
+    private OrderMapper orderMapper;
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderServiceImpl(orderRepository);
+        orderMapper = OrderMapper.INSTANCE;
+        orderService = new OrderServiceImpl(orderRepository, orderMapper);
     }
 
     @Test
@@ -43,14 +50,16 @@ class OrderServiceImplTest {
     void getOrders() {
 
         // arrange
-        List<Order> orders = new ArrayList<>(Collections.singletonList(testOrder));
-        when(orderRepository.findAll()).thenReturn(orders);
+        List<Order> orders = Collections.singletonList(testOrder);
+        List<OrderDto> expectedOrdersDto = Collections.singletonList(orderMapper.orderToOrderDto(testOrder));
+
+        when(orderRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(orders));
 
         // act
-        List<Order> returnedOrders = orderService.getOrders();
+        OrderDtoPagedList returnedOrdersPagedList = orderService.getOrders(testPageable);
 
         // assert
-        assertEquals(orders, returnedOrders);
+        assertEquals(expectedOrdersDto, returnedOrdersPagedList.getContent());
     }
 
     @Test

@@ -22,7 +22,7 @@ public class BootstrapData implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Order o = new Order("1234", new PaymentInformation(3, 9212, 0));
 
         o.addPart(new OrderPart(3L, "Bread", 1, 99));

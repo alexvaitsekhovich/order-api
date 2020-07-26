@@ -18,7 +18,8 @@
 							"});",
 							"",
 							"pm.test(\"Test orders count\", function () {",
-							"    pm.expect(pm.response.json().length).to.eql(2);",
+							"    let orders = pm.response.json()._embedded.orders;",
+							"    pm.expect(orders.length).to.eql(5);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -60,7 +61,7 @@
 							"let orderData = pm.response.json();",
 							"pm.test(\"Test order data\", function () {",
 							"    pm.expect(orderData.id).to.eql(1);",
-							"    pm.expect(orderData.number).to.eql('AX');",
+							"    pm.expect(orderData.number).to.eql('AX1');",
 							"    pm.expect(orderData.statusId).to.eql(0);",
 							"    pm.expect(orderData.paymentId).to.eql(1);",
 							"    pm.expect(orderData.amount).to.eql(200);",
@@ -201,7 +202,7 @@
 							"",
 							"let orderData = pm.response.json();",
 							"pm.test(\"Test order data\", function () {",
-							"    pm.expect(orderData.id).to.eql(3);",
+							"    pm.expect(orderData.id).to.eql(6);",
 							"    pm.expect(orderData.number).to.eql('AX2');",
 							"    pm.expect(orderData.statusId).to.eql(0);",
 							"    pm.expect(orderData.paymentId).to.eql(1);",
@@ -471,7 +472,8 @@
 							"});",
 							"",
 							"pm.test(\"Test orders count\", function () {",
-							"    pm.expect(pm.response.json().length).to.eql(3);",
+							"    console.log(pm.response.json()._embedded.orders);",
+							"    pm.expect(pm.response.json()._embedded.orders.length).to.eql(6);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -482,7 +484,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/orders",
+					"raw": "http://localhost:8080/api/v1/orders?size=20",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -492,6 +494,12 @@
 						"api",
 						"v1",
 						"orders"
+					],
+					"query": [
+						{
+							"key": "size",
+							"value": "20"
+						}
 					]
 				},
 				"description": "Get all orders after adding a new one"
