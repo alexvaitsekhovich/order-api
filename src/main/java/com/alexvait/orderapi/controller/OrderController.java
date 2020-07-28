@@ -35,7 +35,7 @@ public class OrderController {
             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
 
-        log.info(String.format("Getting orders, page: %s, size: %s, sort: %s",
+        log.debug(String.format("Getting orders, page: %s, size: %s, sort: %s",
                 pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort()));
 
         return ResponseEntity.ok(
@@ -48,7 +48,7 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") long orderId) {
 
-        log.info(String.format("Getting order by id #%s", orderId));
+        log.debug(String.format("Getting order by id #%s", orderId));
         return ResponseEntity.ok(
                 orderMapper.orderToOrderDto(
                         orderService.findById(orderId)
@@ -59,7 +59,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderDto> saveOrder(@Valid @RequestBody OrderDto receivedOrderDto) throws URISyntaxException {
 
-        log.info(String.format("Creating new order from dto : %s", receivedOrderDto));
+        log.debug(String.format("Creating new order from dto : %s", receivedOrderDto));
         OrderDto orderDto = orderMapper.orderToOrderDto(
                 orderService.save(
                         orderMapper.orderDtoToOrder(receivedOrderDto)
@@ -74,7 +74,7 @@ public class OrderController {
     @PatchMapping("/{orderId}/actions/{action}")
     public ResponseEntity<OrderDto> updateStatus(@PathVariable("orderId") long orderId, @PathVariable String action) {
 
-        log.info(String.format("Updating status of the order #%d with action '%s'", orderId, action));
+        log.debug(String.format("Updating status of the order #%d with action '%s'", orderId, action));
         return ResponseEntity.ok(
                 orderMapper.orderToOrderDto(
                         orderService.changeStatus(orderId, action)
