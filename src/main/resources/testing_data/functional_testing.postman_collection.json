@@ -18,7 +18,7 @@
 							"});",
 							"",
 							"pm.test(\"Test orders count\", function () {",
-							"    let orders = pm.response.json()._embedded.orders;",
+							"    let orders = pm.response.json().content;",
 							"    pm.expect(orders.length).to.eql(5);",
 							"});"
 						],
@@ -472,8 +472,7 @@
 							"});",
 							"",
 							"pm.test(\"Test orders count\", function () {",
-							"    console.log(pm.response.json()._embedded.orders);",
-							"    pm.expect(pm.response.json()._embedded.orders.length).to.eql(6);",
+							"    pm.expect(pm.response.json().content.length).to.eql(6);",
 							"});"
 						],
 						"type": "text/javascript"

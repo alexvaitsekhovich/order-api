@@ -46,7 +46,7 @@ class OrderControllerTest {
         orderDtoMapper = OrderMapper.INSTANCE;
         jsonMapper = new ObjectMapper();
 
-        OrderController orderController = new OrderController(orderService, orderDtoMapper, null);
+        OrderController orderController = new OrderController(orderService, orderDtoMapper);
         mockMvc = MockMvcBuilders.standaloneSetup(orderController)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();

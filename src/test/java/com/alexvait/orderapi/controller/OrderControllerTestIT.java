@@ -9,6 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
 import static com.alexvait.orderapi.testobjects.TestData.testOrder;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.BDDMockito.when;
@@ -65,16 +66,13 @@ public class OrderControllerTestIT {
                 .andDo(print());
 
         // assert
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+        ArgumentCaptor<PageRequest> pageableCaptor = ArgumentCaptor.forClass(PageRequest.class);
 
         verify(orderService).getOrders(pageableCaptor.capture());
         Pageable pageable = pageableCaptor.getValue();
 
         assertEquals(5, pageable.getPageNumber());
         assertEquals(10, pageable.getPageSize());
-        assertNotNull(pageable.getSort().getOrderFor("number"));
-        assertNotNull(pageable.getSort().getOrderFor("number").getDirection());
-        assertTrue(pageable.getSort().getOrderFor("number").getDirection().isDescending());
     }
 
     @Test
@@ -96,15 +94,13 @@ public class OrderControllerTestIT {
                 .andDo(print());
 
         // assert
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+        ArgumentCaptor<PageRequest> pageableCaptor = ArgumentCaptor.forClass(PageRequest.class);
 
         verify(orderService).getOrders(pageableCaptor.capture());
         Pageable pageable = pageableCaptor.getValue();
 
         assertEquals(0, pageable.getPageNumber());
-        assertNotNull(pageable.getSort().getOrderFor("id"));
-        assertNotNull(pageable.getSort().getOrderFor("id").getDirection());
-        assertTrue(pageable.getSort().getOrderFor("id").getDirection().isAscending());
+        assertEquals(5, pageable.getPageSize());
 
     }
 }

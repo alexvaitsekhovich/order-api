@@ -3,7 +3,6 @@ package com.alexvait.orderapi.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.hateoas.server.core.Relation;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -14,7 +13,6 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
-@Relation(collectionRelation = "orders")
 public class OrderDto {
 
     private Long id;

@@ -8,7 +8,7 @@ import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -20,9 +20,9 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
-    public OrderDtoPagedList getOrders(Pageable pageable) {
+    public OrderDtoPagedList getOrders(PageRequest pageRequest) {
 
-        Page<Order> orderPage = orderRepository.findAll(pageable);
+        Page<Order> orderPage = orderRepository.findAll(pageRequest);
 
         return new OrderDtoPagedList(
                 orderPage.getContent()

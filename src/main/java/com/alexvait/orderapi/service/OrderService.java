@@ -2,13 +2,13 @@ package com.alexvait.orderapi.service;
 
 import com.alexvait.orderapi.dto.OrderDtoPagedList;
 import com.alexvait.orderapi.entity.Order;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface OrderService {
 
-    OrderDtoPagedList getOrders(Pageable pageable);
+    OrderDtoPagedList getOrders(PageRequest pageRequest);
 
     Order findById(Long id);
 
