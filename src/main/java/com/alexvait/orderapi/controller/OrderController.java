@@ -1,16 +1,12 @@
 package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDto;
+import com.alexvait.orderapi.dto.OrderDtoPagedList;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,21 +24,15 @@ public class OrderController {
 
     private final OrderService orderService;
     private final OrderMapper orderMapper;
-    private final PagedResourcesAssembler<OrderDto> assembler;
 
     @GetMapping
-    public ResponseEntity<PagedModel<EntityModel<OrderDto>>> getAllOrders(
-            @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable
-    ) {
+    public ResponseEntity<OrderDtoPagedList> getAllOrders(
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "5") Integer size) {
 
-        log.debug(String.format("Getting orders, page: %s, size: %s, sort: %s",
-                pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort()));
+        log.debug(String.format("Getting orders, page: %s, size: %s", page, size));
 
-        return ResponseEntity.ok(
-                assembler.toModel(
-                        orderService.getOrders(pageable)
-                )
-        );
+        return ResponseEntity.ok(orderService.getOrders(PageRequest.of(page, size)));
     }
 
     @GetMapping("/{orderId}")
