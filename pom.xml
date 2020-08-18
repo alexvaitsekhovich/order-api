@@ -215,6 +215,7 @@
                 <configuration>
                     <excludes>
                         <exclude>**/BootstrapData*</exclude>
+                        <exclude>**/EurekaDiscovery*</exclude>
                         <exclude>**/*Dto*</exclude>
                         <exclude>**/*Config*</exclude>
                         <exclude>**/*OrderApiApplication*</exclude>

@@ -22,6 +22,7 @@ import java.util.Collections;
 import static com.alexvait.orderapi.testobjects.TestData.testOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.BDDMockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -47,7 +48,7 @@ public class OrderControllerTestIT {
     void testGetOrdersWithDefinedPagingParameters() throws Exception {
 
         // arrange
-        when(orderService.getOrders(any())).thenReturn(
+        when(orderService.getOrdersByCustomerId(anyLong(), any())).thenReturn(
                 new OrderDtoPagedList(
                         Collections.singletonList(
                                 OrderMapper.INSTANCE.orderToOrderDto(testOrder)
@@ -56,10 +57,9 @@ public class OrderControllerTestIT {
         );
 
         // act
-        mockMvc.perform(get(OrderController.BASE_URL)
+        mockMvc.perform(get(OrderController.BASE_CUSTOMER_URL + "/1")
                 .param("page", "5")
                 .param("size", "10")
-                .param("sort", "number,desc")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -68,7 +68,7 @@ public class OrderControllerTestIT {
         // assert
         ArgumentCaptor<PageRequest> pageableCaptor = ArgumentCaptor.forClass(PageRequest.class);
 
-        verify(orderService).getOrders(pageableCaptor.capture());
+        verify(orderService).getOrdersByCustomerId(anyLong(), pageableCaptor.capture());
         Pageable pageable = pageableCaptor.getValue();
 
         assertEquals(5, pageable.getPageNumber());
@@ -79,7 +79,7 @@ public class OrderControllerTestIT {
     void testGetOrdersWithDefaultPagingParameters() throws Exception {
 
         // arrange
-        when(orderService.getOrders(any())).thenReturn(
+        when(orderService.getOrdersByCustomerId(anyLong(), any())).thenReturn(
                 new OrderDtoPagedList(
                         Collections.singletonList(
                                 OrderMapper.INSTANCE.orderToOrderDto(testOrder)
@@ -88,7 +88,7 @@ public class OrderControllerTestIT {
         );
 
         // act
-        mockMvc.perform(get(OrderController.BASE_URL)
+        mockMvc.perform(get(OrderController.BASE_CUSTOMER_URL + "/1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -96,7 +96,7 @@ public class OrderControllerTestIT {
         // assert
         ArgumentCaptor<PageRequest> pageableCaptor = ArgumentCaptor.forClass(PageRequest.class);
 
-        verify(orderService).getOrders(pageableCaptor.capture());
+        verify(orderService).getOrdersByCustomerId(anyLong(), pageableCaptor.capture());
         Pageable pageable = pageableCaptor.getValue();
 
         assertEquals(0, pageable.getPageNumber());

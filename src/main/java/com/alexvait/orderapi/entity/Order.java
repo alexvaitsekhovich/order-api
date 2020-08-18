@@ -29,6 +29,14 @@ public class Order {
     @Column(name = "number")
     private String number;
 
+    @NotNull(message = "Entity says: Customer id is mandatory")
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @NotNull(message = "Entity says: Retailer id is mandatory")
+    @Column(name = "retailer_id")
+    private Long retailerId;
+
     @NotNull(message = "Entity says: Order status is mandatory")
     @Column(name = "status_id")
     private int statusId = OrderStatus.CREATED.getId();
@@ -48,8 +56,10 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "order", fetch = FetchType.LAZY)
     private Address address;
 
-    public Order(String number, PaymentInformation paymentInformation) {
+    public Order(String number, Long customerId, Long retailerId, PaymentInformation paymentInformation) {
         this.number = number;
+        this.customerId = customerId;
+        this.retailerId = retailerId;
         this.paymentInformation = paymentInformation;
     }
 

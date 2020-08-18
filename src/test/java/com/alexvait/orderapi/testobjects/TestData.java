@@ -13,7 +13,7 @@ public class TestData implements Cloneable {
     public static final PageRequest testPageable;
 
     static {
-        testOrder = new Order("ABX1", new PaymentInformation(1, 1200, 0));
+        testOrder = new Order("ABX1", 1L, 100L, new PaymentInformation(1, 1200, 0));
         testOrder.setId(4L);
         testOrder.addPart(new OrderPart(12L, "Pizza", 1, 1000));
         testOrder.addPart(new OrderPart(13L, "Fanta", 1, 200));

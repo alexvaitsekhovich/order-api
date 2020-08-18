@@ -1,9 +1,9 @@
-INSERT INTO orders (id, number, amount, discount_amount, payment_id, status_id) VALUES
-    (1, 'AX1', 200, 0, 1, 0),
-    (2, 'AX2', 340, 0, 2, 0),
-    (3, 'AX3', 100, 0, 0, 0),
-    (4, 'AX4', 100, 0, 0, 0),
-    (5, 'AX5', 100, 0, 0, 0);
+INSERT INTO orders (id, number, customer_id, retailer_id, amount, discount_amount, payment_id, status_id) VALUES
+    (1, 'AX1', 1, 100, 200, 0, 1, 0),
+    (2, 'AX2', 1, 100,  340, 0, 2, 0),
+    (3, 'AX3', 1, 100,  100, 0, 0, 0),
+    (4, 'AX4', 1, 100,  100, 0, 0, 0),
+    (5, 'AX5', 1, 100,  100, 0, 0, 0);
 
 
 INSERT INTO order_address (id, city, zip, street, nr, order_id) VALUES

@@ -21,21 +21,25 @@ import java.net.URISyntaxException;
 public class OrderController {
 
     public static final String BASE_URL = "/api/v1/orders";
+    public static final String BASE_ORDER_URL = BASE_URL + "/order";
+    public static final String BASE_CUSTOMER_URL = BASE_URL + "/customer";
 
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    @GetMapping
-    public ResponseEntity<OrderDtoPagedList> getAllOrders(
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<OrderDtoPagedList> getAllOrdersByCustomerId(
+            @PathVariable("customerId") long customerId,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "5") Integer size) {
 
-        log.debug(String.format("Getting orders, page: %s, size: %s", page, size));
+        log.debug(String.format("Getting orders for customer id: #%s, page: %s, size: %s",
+                customerId, page, size));
 
-        return ResponseEntity.ok(orderService.getOrders(PageRequest.of(page, size)));
+        return ResponseEntity.ok(orderService.getOrdersByCustomerId(customerId, PageRequest.of(page, size)));
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/order/{orderId}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") long orderId) {
 
         log.debug(String.format("Getting order by id #%s", orderId));
@@ -57,7 +61,7 @@ public class OrderController {
         );
 
         return ResponseEntity.created(
-                new URI(OrderController.BASE_URL + "/" + orderDto.getId())
+                new URI(OrderController.BASE_ORDER_URL + "/" + orderDto.getId())
         ).body(orderDto);
     }
 

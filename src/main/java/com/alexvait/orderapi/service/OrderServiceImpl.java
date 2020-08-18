@@ -20,9 +20,9 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
-    public OrderDtoPagedList getOrders(PageRequest pageRequest) {
+    public OrderDtoPagedList getOrdersByCustomerId(Long customerId, PageRequest pageRequest) {
 
-        Page<Order> orderPage = orderRepository.findAll(pageRequest);
+        Page<Order> orderPage = orderRepository.findAllByCustomerId(customerId, pageRequest);
 
         return new OrderDtoPagedList(
                 orderPage.getContent()
