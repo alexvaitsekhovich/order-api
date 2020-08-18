@@ -60,7 +60,7 @@ class OrderControllerTest {
         when(orderService.findById(anyLong())).thenReturn(testOrder);
 
         // act, assert
-        MvcResult result = mockMvc.perform(get(OrderController.BASE_URL + "/" + testOrder.getId())
+        MvcResult result = mockMvc.perform(get(OrderController.BASE_ORDER_URL + "/" + testOrder.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -68,6 +68,8 @@ class OrderControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(testOrder.getId()))
                 .andExpect(jsonPath("$.number").value(testOrder.getNumber()))
+                .andExpect(jsonPath("$.customerId").value(testOrder.getCustomerId()))
+                .andExpect(jsonPath("$.retailerId").value(testOrder.getRetailerId()))
                 .andExpect(jsonPath("$.statusId").value(testOrder.getStatusId()))
                 .andExpect(jsonPath("$.paymentId").value(
                         testOrder.getPaymentInformation().getPaymentId()))
@@ -101,7 +103,7 @@ class OrderControllerTest {
         when(orderService.findById(anyLong())).thenThrow(NotFoundException.class);
 
         // act, assert
-        mockMvc.perform(get(OrderController.BASE_URL + "/1"))
+        mockMvc.perform(get(OrderController.BASE_ORDER_URL + "/1"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -113,7 +115,7 @@ class OrderControllerTest {
         // arrange
 
         // act, assert
-        mockMvc.perform(get(OrderController.BASE_URL + "/aaa")
+        mockMvc.perform(get(OrderController.BASE_ORDER_URL + "/aaa")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -167,7 +169,8 @@ class OrderControllerTest {
     public void testSaveValidationException() throws Exception {
 
         // arrange
-        Order order = new Order(testOrder.getNumber(), testOrder.getPaymentInformation());
+        Order order = new Order(testOrder.getNumber(), testOrder.getCustomerId(),
+                testOrder.getRetailerId(), testOrder.getPaymentInformation());
 
         OrderDto orderDto = orderDtoMapper.orderToOrderDto(order);
         orderDto.setStatusId(null);

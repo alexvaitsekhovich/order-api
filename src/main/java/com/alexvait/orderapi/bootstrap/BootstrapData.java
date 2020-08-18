@@ -24,7 +24,7 @@ public class BootstrapData implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        Order o = new Order("AX1", new PaymentInformation(3, 9212, 0));
+        Order o = new Order("AX1", 1L, 100L, new PaymentInformation(3, 9212, 0));
 
         o.addPart(new OrderPart(3L, "Bread", 1, 99));
         o.addPart(new OrderPart(4L, "Tomato", 12, 456));
@@ -35,7 +35,7 @@ public class BootstrapData implements CommandLineRunner {
 
         IntStream.range(1, 5)
                 .forEach(i -> {
-                            Order order = new Order("AX" + i, new PaymentInformation(1, i * 100, 0));
+                            Order order = new Order("AX" + i, 1L, 100L, new PaymentInformation(1, i * 100, 0));
                             order.setAddress(new Address("Nowhere", "10000", "Empty Street.", "-10"));
                             orderService.save(order);
                         }

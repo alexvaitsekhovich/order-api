@@ -53,10 +53,10 @@ class OrderServiceImplTest {
         List<Order> orders = Collections.singletonList(testOrder);
         List<OrderDto> expectedOrdersDto = Collections.singletonList(orderMapper.orderToOrderDto(testOrder));
 
-        when(orderRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(orders));
+        when(orderRepository.findAllByCustomerId(anyLong(), any(Pageable.class))).thenReturn(new PageImpl<>(orders));
 
         // act
-        OrderDtoPagedList returnedOrdersPagedList = orderService.getOrders(testPageable);
+        OrderDtoPagedList returnedOrdersPagedList = orderService.getOrdersByCustomerId(1L, testPageable);
 
         // assert
         assertEquals(expectedOrdersDto, returnedOrdersPagedList.getContent());
@@ -109,7 +109,7 @@ class OrderServiceImplTest {
     void changeStatusSuccess() {
 
         // arrange
-        Order order = new Order("", new PaymentInformation(0, 0, 0));
+        Order order = new Order("", 1L, 100L, new PaymentInformation(0, 0, 0));
         OrderStatus newStatus = OrderStatus.CANCELLED;
         when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order));
 
@@ -128,7 +128,7 @@ class OrderServiceImplTest {
 
         // arrange
         String illegalStatus = "NOT EXISTING";
-        Order order = new Order("", new PaymentInformation(0, 0, 0));
+        Order order = new Order("", 1L, 100L, new PaymentInformation(0, 0, 0));
         when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order));
 
         // act, assert

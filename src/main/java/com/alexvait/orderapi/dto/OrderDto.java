@@ -19,6 +19,12 @@ public class OrderDto {
 
     private String number;
 
+    @NotNull(message = "Customer id is mandatory")
+    private Long customerId;
+
+    @NotNull(message = "Retailer id is mandatory")
+    private Long retailerId;
+
     private Integer statusId;
 
     @NotNull(message = "Payment id is mandatory")

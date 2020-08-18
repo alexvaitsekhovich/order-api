@@ -25,7 +25,7 @@ class OrderPartTest {
         int AMOUNT = random.nextInt(1000);
         int PRICE = random.nextInt(10000);
 
-        Order o = new Order(ORDER_NUMBER, new PaymentInformation(1, 1, 1));
+        Order o = new Order(ORDER_NUMBER, 1L, 100L, new PaymentInformation(1, 1, 1));
         o.setAddress(testOrder.getAddress());
 
         OrderPart orderPart = new OrderPart(ITEM_ID, ITEM_NAME, AMOUNT, PRICE);

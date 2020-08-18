@@ -40,7 +40,7 @@ class OrderServiceImplTestIT {
         // arrange
 
         // act
-        OrderDtoPagedList ordersDtoPagedList = orderService.getOrders(testPageable);
+        OrderDtoPagedList ordersDtoPagedList = orderService.getOrdersByCustomerId(1L, testPageable);
 
         // assert
         List<OrderDto> orderDtoList = ordersDtoPagedList.getContent();

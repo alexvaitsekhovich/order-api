@@ -4,6 +4,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Test Address entity")
@@ -19,7 +21,12 @@ class AddressTest {
         String zip = RandomStringUtils.randomAlphabetic(10);
         String street = RandomStringUtils.randomAlphabetic(100);
         String nr = RandomStringUtils.randomAlphabetic(10);
-        Order o = new Order(orderNumber, new PaymentInformation(1, 1, 1));
+
+        Random r = new Random(32);
+        Long customerId = r.nextLong();
+        Long retailerId = r.nextLong();
+
+        Order o = new Order(orderNumber, customerId, retailerId, new PaymentInformation(1, 1, 1));
 
         Address address = new Address(city, zip, street, nr);
         o.setAddress(address);

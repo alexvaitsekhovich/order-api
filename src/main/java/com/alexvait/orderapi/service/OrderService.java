@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface OrderService {
 
-    OrderDtoPagedList getOrders(PageRequest pageRequest);
+    OrderDtoPagedList getOrdersByCustomerId(Long customerId, PageRequest pageRequest);
 
     Order findById(Long id);
 
