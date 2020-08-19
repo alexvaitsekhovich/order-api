@@ -61,6 +61,13 @@
 							"});",
 							"",
 							"let orderData = pm.response.json();",
+							"",
+							"pm.test(\"Test fields count\", function () {",
+							"    pm.expect(Object.keys(orderData).length).to.eql(11);",
+							"    pm.expect(Object.keys(orderData.address).length).to.eql(5);",
+							"    pm.expect(Object.keys(orderData.orderParts[0]).length).to.eql(5);",
+							"});",
+							"",
 							"pm.test(\"Test order data\", function () {",
 							"    pm.expect(orderData.id).to.eql(1);",
 							"    pm.expect(orderData.number).to.eql('AX1');",
@@ -206,9 +213,15 @@
 							"});",
 							"",
 							"let orderData = pm.response.json();",
+							"",
+							"pm.test(\"Test count of fields in objects\", function () {",
+							"    pm.expect(Object.keys(orderData).length).to.eql(11);",
+							"    pm.expect(Object.keys(orderData.address).length).to.eql(5);",
+							"    pm.expect(Object.keys(orderData.orderParts[0]).length).to.eql(5);",
+							"});",
+							"",
 							"pm.test(\"Test order data\", function () {",
 							"    pm.expect(orderData.id).to.eql(6);",
-							"    pm.expect(orderData.number).to.eql('AX2');",
 							"    pm.expect(orderData.statusId).to.eql(0);",
 							"    pm.expect(orderData.paymentId).to.eql(1);",
 							"    pm.expect(orderData.amount).to.eql(1200);",
@@ -244,7 +257,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"number\":\"AX2\",\n    \"paymentId\":1,\n    \"customerId\":1,\n    \"retailerId\":1,\n    \"amount\":1200,\n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
+					"raw": "{\n    \"paymentId\":1,\n    \"customerId\":1,\n    \"retailerId\":1,\n    \"amount\":1200,\n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -302,7 +315,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"number\":\"AX2\",\n    \n   \n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
+					"raw": "{\n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -358,7 +371,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"number\":\"AX2\",\n    \"paymentId\":0,\n     \n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}"
+					"raw": "{\n    \"paymentId\":0,     \n    \"discountAmount\":0,\n    \"address\" : {\n        \"zip\":\"142\",\n        \"city\":\"Berlin\",\n        \"street\":\"Chausseestr.\",\n        \"nr\":\"1\"\n    },\n    \"orderParts\":[\n        {\n            \"itemId\":3,\n            \"itemName\":\"Pizza\",\n            \"count\":1,\n            \"price\":1000\n        },\n        {\n            \"itemId\":4,\n            \"itemName\":\"Fanta\",\n            \"count\":1,\n            \"price\":200\n        }\n    ]\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/v1/orders",

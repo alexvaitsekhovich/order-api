@@ -2,13 +2,15 @@ package com.alexvait.orderapi.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.RandomStringUtils;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,7 +27,6 @@ public class Order {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @NotBlank(message = "Entity says: Order number is mandatory")
     @Column(name = "number")
     private String number;
 
@@ -81,10 +82,9 @@ public class Order {
         this.statusId = statusId;
     }
 
-/*
     @PrePersist
     protected void onCreate() {
-        createdOn = OffsetDateTime.now();
+        String date = new SimpleDateFormat("yyMMdd").format(new Date());
+        number = date + RandomStringUtils.random(8, true, true);
     }
-*/
 }
