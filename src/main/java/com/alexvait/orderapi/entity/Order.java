@@ -27,6 +27,7 @@ public class Order {
     @Column(updatable = false, nullable = false)
     private Long id;
 
+    @Column(name = "number")
     private String number;
 
     @NotNull(message = "Entity says: Customer id is mandatory")
