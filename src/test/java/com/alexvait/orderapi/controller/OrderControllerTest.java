@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
+
 import static com.alexvait.orderapi.testobjects.TestData.testOrder;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
@@ -51,6 +53,7 @@ class OrderControllerTest {
         jsonMapper = new ObjectMapper();
 
         OrderController orderController = new OrderController(orderService, orderDtoMapper);
+        orderController.setTransmitters(Arrays.asList(orderTransmitter));
         mockMvc = MockMvcBuilders.standaloneSetup(orderController)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();

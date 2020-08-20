@@ -1,6 +1,7 @@
 package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDtoPagedList;
+import com.alexvait.orderapi.integration.OrderTransmitter;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
+import java.util.List;
 
 import static com.alexvait.orderapi.testobjects.TestData.testOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,6 +45,9 @@ public class OrderControllerTestIT {
 
     @MockBean
     private OrderMapper orderMapper;
+
+    @MockBean
+    private List<OrderTransmitter> orderTransmitters;
 
     @Test
     void testGetOrdersWithDefinedPagingParameters() throws Exception {
