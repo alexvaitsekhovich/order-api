@@ -4,6 +4,7 @@ import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.integration.rabbitmessage.DelayedMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.AmqpConnectException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -41,8 +42,8 @@ public class OrderTransmitterAmqp implements OrderTransmitter {
         try {
             String jsonMessage = delayedMessage.toJsonString();
             rabbitTemplate.convertAndSend(delayExchangeName, "", jsonMessage.getBytes(StandardCharsets.UTF_8));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (JsonProcessingException | AmqpConnectException e) {
+            log.error(e.getMessage());
         }
     }
 }
