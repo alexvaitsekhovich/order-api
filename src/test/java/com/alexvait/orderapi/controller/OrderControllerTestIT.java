@@ -4,6 +4,7 @@ import com.alexvait.orderapi.dto.OrderDtoPagedList;
 import com.alexvait.orderapi.integration.OrderTransmitter;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(OrderController.class)
 @EnableSpringDataWebSupport
 @ActiveProfiles("testing")
+@DisplayName("Integration test for Order controller")
 public class OrderControllerTestIT {
 
     @Autowired
@@ -50,6 +52,7 @@ public class OrderControllerTestIT {
     private List<OrderTransmitter> orderTransmitters;
 
     @Test
+    @DisplayName("Test order get with defined pagination")
     void testGetOrdersWithDefinedPagingParameters() throws Exception {
 
         // arrange
@@ -81,6 +84,7 @@ public class OrderControllerTestIT {
     }
 
     @Test
+    @DisplayName("Test order get with default pagination")
     void testGetOrdersWithDefaultPagingParameters() throws Exception {
 
         // arrange

@@ -18,6 +18,7 @@ class OrderMapperTest {
     private final OrderMapper orderMapper = OrderMapper.INSTANCE;
 
     @Test
+    @DisplayName("Test Order to OrderDTO conversion")
     public void testOrderToOrderDto() {
 
         // arrange
@@ -42,6 +43,7 @@ class OrderMapperTest {
     }
 
     @Test
+    @DisplayName("Test Order to OrderDTO conversion with null values")
     public void testOrderToOrderDtoWithNull() {
 
         // arrange
@@ -60,6 +62,7 @@ class OrderMapperTest {
     }
 
     @Test
+    @DisplayName("Test timestamp to OffsetDateTime conversion")
     void timestampToOffsetDateTime() {
         Timestamp ts = Timestamp.valueOf("2020-03-12 13:11:22.0");
         OffsetDateTime odt = orderMapper.timestampToOffsetDateTime(ts);
@@ -73,6 +76,7 @@ class OrderMapperTest {
     }
 
     @Test
+    @DisplayName("Test OffsetDateTime to timestamp conversion")
     void offsetDateTimeToTimestamp() {
         OffsetDateTime odt = OffsetDateTime.parse("2020-03-12T13:11:22+00:00");
         Timestamp ts = orderMapper.offsetDateTimeToTimestamp(odt);
