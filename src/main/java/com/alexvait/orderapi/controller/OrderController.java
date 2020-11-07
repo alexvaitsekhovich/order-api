@@ -2,11 +2,9 @@ package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.dto.OrderDtoPagedList;
-import com.alexvait.orderapi.integration.OrderTransmitter;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 @RestController
 @RequestMapping(OrderController.BASE_URL)
@@ -28,16 +25,9 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    private List<OrderTransmitter> transmitters;
-
     public OrderController(OrderService orderService, OrderMapper orderMapper) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
-    }
-
-    @Autowired
-    public void setTransmitters(List<OrderTransmitter> transmitters) {
-        this.transmitters = transmitters;
     }
 
     @GetMapping("/customer/{customerId}")
@@ -73,8 +63,6 @@ public class OrderController {
                 )
         );
 
-        distributeToTransmitters(orderDto);
-
         return ResponseEntity.created(
                 new URI(OrderController.BASE_ORDER_URL + "/" + orderDto.getId())
         ).body(orderDto);
@@ -89,11 +77,5 @@ public class OrderController {
                         orderService.changeStatus(orderId, action)
                 )
         );
-    }
-
-    private void distributeToTransmitters(OrderDto orderDto) {
-        for (OrderTransmitter transmitter : transmitters) {
-            transmitter.transmit(orderDto);
-        }
     }
 }

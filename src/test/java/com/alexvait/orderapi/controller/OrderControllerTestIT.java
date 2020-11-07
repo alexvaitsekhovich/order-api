@@ -1,7 +1,6 @@
 package com.alexvait.orderapi.controller;
 
 import com.alexvait.orderapi.dto.OrderDtoPagedList;
-import com.alexvait.orderapi.integration.OrderTransmitter;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import org.junit.jupiter.api.DisplayName;
@@ -47,9 +46,6 @@ public class OrderControllerTestIT {
 
     @MockBean
     private OrderMapper orderMapper;
-
-    @MockBean
-    private List<OrderTransmitter> orderTransmitters;
 
     @Test
     @DisplayName("Test order get with defined pagination")

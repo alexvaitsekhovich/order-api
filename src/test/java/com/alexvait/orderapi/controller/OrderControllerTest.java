@@ -4,7 +4,6 @@ import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.entity.Order;
 import com.alexvait.orderapi.exception.IllegalOrderStatusException;
 import com.alexvait.orderapi.exception.NotFoundException;
-import com.alexvait.orderapi.integration.OrderTransmitter;
 import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.service.OrderService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,8 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Arrays;
 
 import static com.alexvait.orderapi.testobjects.TestData.testOrder;
 import static org.hamcrest.Matchers.containsString;
@@ -39,9 +36,6 @@ class OrderControllerTest {
     @Mock
     private OrderService orderService;
 
-    @Mock
-    private OrderTransmitter orderTransmitter;
-
     private OrderMapper orderDtoMapper;
     private ObjectMapper jsonMapper;
 
@@ -53,7 +47,6 @@ class OrderControllerTest {
         jsonMapper = new ObjectMapper();
 
         OrderController orderController = new OrderController(orderService, orderDtoMapper);
-        orderController.setTransmitters(Arrays.asList(orderTransmitter));
         mockMvc = MockMvcBuilders.standaloneSetup(orderController)
                 .setControllerAdvice(new ControllerExceptionHandler())
                 .build();
@@ -164,12 +157,12 @@ class OrderControllerTest {
                 .andReturn();
 
         EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(
-                result.getResponse().getContentAsString(), new TypeReference<EntityModel<OrderDto>>() {});
+                result.getResponse().getContentAsString(), new TypeReference<EntityModel<OrderDto>>() {
+                });
         OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
 
         assertEquals(testOrder, orderDtoMapper.orderDtoToOrder(createdOrderDto));
         verify(orderService, times(1)).save(testOrder);
-        verify(orderTransmitter, times(1)).transmit(orderDto);
     }
 
     @Test
