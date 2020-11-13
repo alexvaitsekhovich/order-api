@@ -216,6 +216,7 @@
                         <exclude>**/BootstrapData*</exclude>
                         <exclude>**/EurekaDiscovery*</exclude>
                         <exclude>**/*Dto*</exclude>
+                        <exclude>**/PaymentInformation*</exclude>
                         <exclude>**/*Config*</exclude>
                         <exclude>**/*OrderApiApplication*</exclude>
                     </excludes>
@@ -256,8 +257,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>9</source>
+                    <target>9</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

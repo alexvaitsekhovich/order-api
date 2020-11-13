@@ -25,9 +25,9 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    public OrderController(OrderService orderService, OrderMapper orderMapper) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.orderMapper = orderMapper;
+        this.orderMapper = OrderMapper.INSTANCE;
     }
 
     @GetMapping("/customer/{customerId}")

@@ -47,7 +47,7 @@ class ApiErrorTest {
         // act
 
         // assert
-        assertThat(apiError.getErrorBody().get("errors"), nullValue());
+        assertThat(apiError.getErrorBody().get("errors"), nullValue(null));
     }
 
     @Test
