@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @ActiveProfiles("testing")
-@DisplayName("Test order repository")
+@DisplayName("Integration test for order repository")
 class OrderRepositoryTestIT {
 
     @Autowired
