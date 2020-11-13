@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest
 @ActiveProfiles("testing")
 @DisplayName("Integration test for Order service implementation")
-class OrderServiceImplTestIT {
+class OrderServiceImplJpaTest {
 
     @Autowired
     private OrderRepository orderRepository;
