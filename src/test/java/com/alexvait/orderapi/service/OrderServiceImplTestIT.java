@@ -2,7 +2,7 @@ package com.alexvait.orderapi.service;
 
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.dto.OrderDtoPagedList;
-import com.alexvait.orderapi.mapper.OrderMapperImpl;
+import com.alexvait.orderapi.mapper.OrderMapper;
 import com.alexvait.orderapi.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,12 +31,12 @@ class OrderServiceImplTestIT {
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderServiceImpl(orderRepository, new OrderMapperImpl());
+        orderService = new OrderServiceImpl(orderRepository, OrderMapper.INSTANCE);
     }
 
     @Test
     @DisplayName("Test get multiple orders")
-    void getOrders() {
+    void testGetOrders() {
         // arrange
 
         // act

@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("testing")
-@DisplayName("Integration test for Order controller")
+@DisplayName("Test Order controller")
 class OrderControllerTest {
 
     @InjectMocks

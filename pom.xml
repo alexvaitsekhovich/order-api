@@ -150,21 +150,6 @@
                         <includeLayerTools>true</includeLayerTools>
                     </layers>
                 </configuration>
-                <!--
-                                <executions>
-                                    <execution>
-                                        <goals>
-                                            <goal>repackage</goal>
-                                        </goals>
-                                        <configuration>
-                                            <classifier>spring-boot</classifier>
-                                            <mainClass>
-                                                com.alexvait.orderapi.OrderApiApplication
-                                            </mainClass>
-                                        </configuration>
-                                    </execution>
-                                </executions>
-                                -->
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
