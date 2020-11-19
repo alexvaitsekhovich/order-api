@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("testing")
-@DisplayName("Integration test for Order controller")
+@DisplayName("MockMvc test for Order controller")
 class OrderControllerMockMvcTest {
 
     @Mock
@@ -94,7 +94,7 @@ class OrderControllerMockMvcTest {
 
         EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(
                 result.getResponse().getContentAsString(),
-                new TypeReference<EntityModel<OrderDto>>() {
+                new TypeReference<>() {
                 }
         );
         OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
@@ -227,7 +227,7 @@ class OrderControllerMockMvcTest {
                 .andReturn();
 
         EntityModel<OrderDto> returnedOrderDtoModel = jsonMapper.readValue(
-                result.getResponse().getContentAsString(), new TypeReference<EntityModel<OrderDto>>() {
+                result.getResponse().getContentAsString(), new TypeReference<>() {
                 });
         OrderDto createdOrderDto = returnedOrderDtoModel.getContent();
 
