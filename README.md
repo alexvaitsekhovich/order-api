@@ -13,7 +13,7 @@ Endpoints:
 <br>
 
 <p align="center">
-<img src="https://github.com/alexvaitsekhovich/images/blob/main/order_api_swagger.png" width="1506px" height="596px" alt="Ordering API endpoints">
+<img src="https://github.com/alexvaitsekhovich/images/blob/main/order_api_swagger.png" width="753px" height="298px" alt="Ordering API endpoints">
 
 
 ##### Example post request:
