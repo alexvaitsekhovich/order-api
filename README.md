@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/alexvaitsekhovich/order-api/branch/master/graph/badge.svg)](https://codecov.io/gh/alexvaitsekhovich/order-api) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/bff1304d1d394d2187cb2274ed2e2a4a)](https://www.codacy.com/manual/alexvaitsekhovich/order-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=alexvaitsekhovich/order-api&amp;utm_campaign=Badge_Grade) [![Maintainability](https://api.codeclimate.com/v1/badges/998d493d1cffc9bac7cb/maintainability)](https://codeclimate.com/github/alexvaitsekhovich/order-api/maintainability)
 
 
-#### Order API for ordering microservice system
+#### Ordering API, a part of ordering microservice system
 
 After API is started, Swagger UI:
 http://localhost:8080/swagger-ui.html
