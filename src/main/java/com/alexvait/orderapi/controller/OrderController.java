@@ -1,5 +1,6 @@
 package com.alexvait.orderapi.controller;
 
+import com.alexvait.orderapi.controller.annotated.OrderControllerSwaggerAnnotated;
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.dto.OrderDtoPagedList;
 import com.alexvait.orderapi.mapper.OrderMapper;
@@ -16,7 +17,7 @@ import java.net.URISyntaxException;
 @RestController
 @RequestMapping(OrderController.BASE_URL)
 @Slf4j
-public class OrderController {
+public class OrderController implements OrderControllerSwaggerAnnotated {
 
     public static final String BASE_URL = "/api/v1/orders";
     public static final String BASE_ORDER_URL = BASE_URL + "/order";
