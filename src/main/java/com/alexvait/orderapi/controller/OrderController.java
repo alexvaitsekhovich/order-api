@@ -1,5 +1,6 @@
 package com.alexvait.orderapi.controller;
 
+import com.alexvait.orderapi.controller.annotated.OrderControllerSwaggerAnnotated;
 import com.alexvait.orderapi.dto.OrderDto;
 import com.alexvait.orderapi.dto.OrderDtoPagedList;
 import com.alexvait.orderapi.mapper.OrderMapper;
@@ -16,7 +17,7 @@ import java.net.URISyntaxException;
 @RestController
 @RequestMapping(OrderController.BASE_URL)
 @Slf4j
-public class OrderController {
+public class OrderController implements OrderControllerSwaggerAnnotated {
 
     public static final String BASE_URL = "/api/v1/orders";
     public static final String BASE_ORDER_URL = BASE_URL + "/order";
@@ -30,6 +31,7 @@ public class OrderController {
         this.orderMapper = OrderMapper.INSTANCE;
     }
 
+    @Override
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<OrderDtoPagedList> getAllOrdersByCustomerId(
             @PathVariable("customerId") long customerId,
@@ -42,6 +44,7 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByCustomerId(customerId, PageRequest.of(page, size)));
     }
 
+    @Override
     @GetMapping("/order/{orderId}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") long orderId) {
 
@@ -53,6 +56,7 @@ public class OrderController {
         );
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<OrderDto> saveOrder(@Valid @RequestBody OrderDto receivedOrderDto) throws URISyntaxException {
 
@@ -68,6 +72,7 @@ public class OrderController {
         ).body(orderDto);
     }
 
+    @Override
     @PatchMapping("/{orderId}/actions/{action}")
     public ResponseEntity<OrderDto> updateStatus(@PathVariable("orderId") long orderId, @PathVariable String action) {
 

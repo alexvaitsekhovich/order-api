@@ -17,6 +17,7 @@ Endpoint | Method | Description
 /api/v1/orders | POST | Create an order
 /api/v1/orders/{orderId}/actions/{action} | PATCH | Change order status
 
+Swagger documentation when API is running: http://localhost:8080/swagger-ui.html
 
 ##### Example post request:
 
