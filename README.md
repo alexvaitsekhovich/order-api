@@ -12,7 +12,6 @@ Endpoints:
 
 <br>
 
-<p align="center">
 <img src="https://github.com/alexvaitsekhovich/images/blob/main/order_api_swagger.png" width="753px" height="298px" alt="Ordering API endpoints">
 
 
