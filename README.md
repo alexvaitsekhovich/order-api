@@ -10,12 +10,10 @@
 
 Endpoints:
 
-Endpoint | Method | Description
------------- | ------------ | -------------
-/api/v1/orders/customer/{customerId} | GET | Get all orders for the customer
-/api/v1/orders/order/{orderId} | GET | Get order
-/api/v1/orders | POST | Create an order
-/api/v1/orders/{orderId}/actions/{action} | PATCH | Change order status
+<br>
+
+<p align="center">
+<img src="https://github.com/alexvaitsekhovich/images/blob/main/order_api_swagger.png" width="1506px" height="596px" alt="Ordering API endpoints">
 
 
 ##### Example post request:
