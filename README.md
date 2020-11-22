@@ -50,10 +50,3 @@ Endpoints:
 }
 ```
 
-##### Allowed order states in PATCH request:
-* 0 - created (default on order creation)
-* 1 - approved
-* 2 - delivered
-* 3 - cancelled
-* 4 - fake
-
