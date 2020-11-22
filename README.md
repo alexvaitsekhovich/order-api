@@ -8,6 +8,9 @@
 
 #### Order API for ordering microservice system
 
+After API is started, Swagger UI:
+http://localhost:8080/swagger-ui.html
+
 Endpoints:
 
 <br>
