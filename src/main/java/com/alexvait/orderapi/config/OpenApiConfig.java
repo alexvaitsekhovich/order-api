@@ -7,9 +7,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Accounting API",
+                title = "Ordering API",
                 version = "v1",
-                description = "REST API for accounting, with user management and JWT token authentication",
+                description = "REST API for order placement",
                 contact = @Contact(
                         name = "Alex Vait",
                         email = "alex.vaitsekhovich@gmail.com",
