@@ -51,7 +51,7 @@ public interface OrderControllerSwaggerAnnotated {
 
 
     @Operation(
-            summary = "Update the status of an order",
+            summary = "Update status of an order",
             tags = "Ordering",
             description = "Use this endpoint to update the order status"
     )
